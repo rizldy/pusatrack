@@ -6,21 +6,30 @@ android-app/*/build/
 android-app/.idea/caches/
 android-app/.idea/modules.xml
 android-app/.idea/workspace.xml
+android-app/.idea/navEditor.xml
+android-app/.idea/assetWizardSettings.xml
 android-app/*.iml
+android-app/captures/
+android-app/.navigation/
+android-app/out/
 
-# --- Backend / PHP / Composer / Environment ---
+# --- Backend / PHP / Composer / CodeIgniter 4 ---
 backend-api/vendor/
 backend-api/.env
 backend-api/writable/cache/*
 backend-api/writable/logs/*
 backend-api/writable/session/*
 backend-api/writable/uploads/*
+backend-api/writable/debugbar/*
 !backend-api/writable/cache/.gitkeep
 !backend-api/writable/logs/.gitkeep
 !backend-api/writable/session/.gitkeep
 !backend-api/writable/uploads/.gitkeep
+!backend-api/writable/debugbar/.gitkeep
 
 # --- OS & Editor ---
 .DS_Store
 Thumbs.db
 *.log
+*.tmp
+*.bak
