@@ -1,0 +1,26 @@
+# --- Android Studio / Gradle ---
+android-app/.gradle/
+android-app/local.properties
+android-app/build/
+android-app/*/build/
+android-app/.idea/caches/
+android-app/.idea/modules.xml
+android-app/.idea/workspace.xml
+android-app/*.iml
+
+# --- Backend / PHP / Composer / Environment ---
+backend-api/vendor/
+backend-api/.env
+backend-api/writable/cache/*
+backend-api/writable/logs/*
+backend-api/writable/session/*
+backend-api/writable/uploads/*
+!backend-api/writable/cache/.gitkeep
+!backend-api/writable/logs/.gitkeep
+!backend-api/writable/session/.gitkeep
+!backend-api/writable/uploads/.gitkeep
+
+# --- OS & Editor ---
+.DS_Store
+Thumbs.db
+*.log
