@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS ingredients (
     current_stock DECIMAL(12,2) NOT NULL DEFAULT 0.00,
     minimum_stock DECIMAL(12,2) NOT NULL DEFAULT 0.00,
     unit_cost DECIMAL(12,2) NOT NULL DEFAULT 0.00,
+    image_url VARCHAR (255),
     is_active BOOLEAN NOT NULL DEFAULT TRUE
 ) ENGINE=InnoDB;
 
