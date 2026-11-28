@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingVertical="8dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvItemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.PusaTrack.TitleSmall"
+            tools:text="Kopi Susu" />
+
+        <TextView
+            android:id="@+id/tvItemSubtotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textAppearance="@style/TextAppearance.PusaTrack.BodySmall"
+            tools:text="Rp 10.000 · Subtotal Rp 20.000" />
+    </LinearLayout>
+
+    <!-- Quantity Stepper -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btnMinus"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:background="@drawable/bg_menu_icon_tile"
+            android:contentDescription="Kurangi jumlah"
+            android:padding="9dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_remove" />
+
+        <TextView
+            android:id="@+id/tvQty"
+            android:layout_width="34dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/plus_jakarta_sans_bold"
+            android:gravity="center"
+            android:textColor="@color/text_ink"
+            android:textSize="15sp"
+            tools:text="2" />
+
+        <ImageButton
+            android:id="@+id/btnPlus"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:background="@drawable/bg_circle_forest"
+            android:contentDescription="Tambah jumlah"
+            android:padding="9dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_add" />
+    </LinearLayout>
+</LinearLayout>

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -18,6 +19,7 @@ import com.pusacoffee.pusatrack.data.local.SessionManager
 import com.pusacoffee.pusatrack.data.model.StockStatus
 import com.pusacoffee.pusatrack.data.repository.AuthRepository
 import com.pusacoffee.pusatrack.data.repository.InventoryRepository
+import com.pusacoffee.pusatrack.data.repository.SalesRepository
 import com.pusacoffee.pusatrack.databinding.FragmentHomeBinding
 import com.pusacoffee.pusatrack.utils.CurrencyFormatter
 import com.pusacoffee.pusatrack.utils.DateFormatter
@@ -30,6 +32,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var sessionManager: SessionManager
     private lateinit var authRepository: AuthRepository
+    private var latestSaleId: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,60 +49,70 @@ class HomeFragment : Fragment() {
         sessionManager = SessionManager(requireContext())
         authRepository = AuthRepository(requireContext())
 
-        bindUserAndSummary()
-        observeInventorySummary()
+        bindStaticHeaderAndTiles()
+        observeLiveSummaries()
         setupClickListeners()
     }
 
-    private fun bindUserAndSummary() {
+    private fun bindStaticHeaderAndTiles() {
         val fullName = sessionManager.getFullName().orEmpty().ifBlank { "Karyawan" }
 
         binding.tvGreeting.text = DateFormatter.getGreeting()
         binding.tvUserName.text = fullName
         binding.tvHeroDate.text = DateFormatter.formatDate()
 
-        // Initial operational summary matching PRD & mockup v7
-        val totalSales = 360_000L
-        val cashSales = 210_000L
-        val qrisSales = 150_000L
-        val transactionCount = 18
-
-        binding.tvTodaySales.text = CurrencyFormatter.format(totalSales)
-        binding.tvSalesBreakdown.text =
-            "$transactionCount transaksi · Tunai ${CurrencyFormatter.format(cashSales)} · QRIS ${CurrencyFormatter.format(qrisSales)}"
-
+        // Expense & Active Order tiles (connected in MS-3)
         binding.tvExpenseTodayValue.text = CurrencyFormatter.format(40_000L)
         binding.tvExpenseTodayMeta.text = "2 catatan · Tunai"
-
-        binding.tvLastTrxCode.text = "TRX-0015"
-        binding.tvLastTrxMeta.text = "09:38 · ${CurrencyFormatter.format(30_000L)}"
 
         binding.tvActiveOrderCode.text = "PSN-014"
         binding.tvActiveOrderMeta.text = "2 hari · Perjalanan"
     }
 
-    private fun observeInventorySummary() {
+    private fun observeLiveSummaries() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                InventoryRepository.ingredients.collect { ingredients ->
-                    val lowOrOut = ingredients.filter {
-                        it.isActive &&
-                            (it.stockStatus == StockStatus.LOW || it.stockStatus == StockStatus.OUT)
-                    }
-                    val count = lowOrOut.size
-                    binding.tvNotificationBadge.isVisible = count > 0
-                    binding.tvNotificationBadge.text = count.toString()
+                launch {
+                    SalesRepository.sales.collect {
+                        val summary = SalesRepository.getTodaySummary()
+                        binding.tvTodaySales.text = CurrencyFormatter.format(summary.totalAmount)
+                        binding.tvSalesBreakdown.text =
+                            "${summary.transactionCount} transaksi · Tunai ${CurrencyFormatter.format(summary.cashAmount)} · QRIS ${CurrencyFormatter.format(summary.qrisAmount)}"
 
-                    binding.bannerLowStock.isVisible = count > 0
-                    if (count > 0) {
-                        val names = lowOrOut.joinToString(", ") { it.ingredientName }
-                        binding.tvLowStockDesc.text =
-                            "$count bahan baku di bawah batas minimum ($names)"
-                        binding.tvLowStockCount.text = "$count bahan"
-                        binding.tvLowStockNames.text = names
-                    } else {
-                        binding.tvLowStockCount.text = "0 bahan"
-                        binding.tvLowStockNames.text = "Semua stok aman"
+                        val latest = summary.latestSale
+                        latestSaleId = latest?.saleId
+                        if (latest != null) {
+                            binding.tvLastTrxCode.text = latest.saleNumber
+                            binding.tvLastTrxMeta.text =
+                                "${latest.confirmedTimeLabel} · ${CurrencyFormatter.format(latest.totalAmount)}"
+                        } else {
+                            binding.tvLastTrxCode.text = "-"
+                            binding.tvLastTrxMeta.text = "Belum ada transaksi"
+                        }
+                    }
+                }
+
+                launch {
+                    InventoryRepository.ingredients.collect { ingredients ->
+                        val lowOrOut = ingredients.filter {
+                            it.isActive &&
+                                (it.stockStatus == StockStatus.LOW || it.stockStatus == StockStatus.OUT)
+                        }
+                        val count = lowOrOut.size
+                        binding.tvNotificationBadge.isVisible = count > 0
+                        binding.tvNotificationBadge.text = count.toString()
+
+                        binding.bannerLowStock.isVisible = count > 0
+                        if (count > 0) {
+                            val names = lowOrOut.joinToString(", ") { it.ingredientName }
+                            binding.tvLowStockDesc.text =
+                                "$count bahan baku di bawah batas minimum ($names)"
+                            binding.tvLowStockCount.text = "$count bahan"
+                            binding.tvLowStockNames.text = names
+                        } else {
+                            binding.tvLowStockCount.text = "0 bahan"
+                            binding.tvLowStockNames.text = "Semua stok aman"
+                        }
                     }
                 }
             }
@@ -126,7 +139,15 @@ class HomeFragment : Fragment() {
         }
 
         binding.cardLastTransaction.setOnClickListener {
-            mainActivity?.navigateToTab(R.id.historyFragment)
+            val saleId = latestSaleId
+            if (saleId != null) {
+                findNavController().navigate(
+                    R.id.transactionDetailFragment,
+                    bundleOf("saleId" to saleId)
+                )
+            } else {
+                mainActivity?.navigateToTab(R.id.historyFragment)
+            }
         }
 
         binding.cardLowStockTile.setOnClickListener {

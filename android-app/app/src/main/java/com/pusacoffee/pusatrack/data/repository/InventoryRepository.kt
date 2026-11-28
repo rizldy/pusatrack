@@ -1,7 +1,9 @@
 package com.pusacoffee.pusatrack.data.repository
 
+import com.pusacoffee.pusatrack.data.model.ActivityType
 import com.pusacoffee.pusatrack.data.model.Ingredient
 import com.pusacoffee.pusatrack.data.model.ProcurementType
+import com.pusacoffee.pusatrack.data.model.StockEffect
 import com.pusacoffee.pusatrack.data.model.StockMovement
 import com.pusacoffee.pusatrack.data.model.StockMovementType
 import com.pusacoffee.pusatrack.data.model.StockStatus
@@ -116,6 +118,15 @@ object InventoryRepository {
                 description = "Pencatatan stok awal bahan baru"
             )
             _movements.value = listOf(openingMovement) + _movements.value
+            ActivityHistoryRepository.record(
+                userId = 0,
+                userName = userName,
+                activityType = ActivityType.STOCK,
+                title = "Bahan baru ditambahkan",
+                subtitle = "$trimmedName · Stok awal $openingStockPackages $trimmedPurchaseUnit",
+                amountOrDelta = "+${Ingredient.formatNumber(openingStockUsage)} $trimmedUsageUnit",
+                isNegativeDelta = false
+            )
         }
 
         return RepoResult.Success(newIngredient)
@@ -228,7 +239,71 @@ object InventoryRepository {
         )
         _movements.value = listOf(movement) + _movements.value
 
+        ActivityHistoryRepository.record(
+            userId = 0,
+            userName = userName,
+            activityType = ActivityType.STOCK,
+            title = "Stok ditambah",
+            subtitle = "${existing.ingredientName} · $placeText (+$packageQuantity ${existing.purchaseUnit})",
+            amountOrDelta = "+${Ingredient.formatNumber(addedUsage)} ${existing.usageUnit}",
+            isNegativeDelta = false
+        )
+
         return RepoResult.Success(updated)
+    }
+
+    /**
+     * Atomically deducts ingredient stock for a confirmed sale (R-02) and writes SALE StockMovements.
+     */
+    fun deductStockForSale(
+        deductions: Map<Int, Int>,
+        saleNumber: String,
+        userName: String,
+        dateTimeLabel: String
+    ): List<StockEffect> {
+        if (deductions.isEmpty()) return emptyList()
+
+        val effects = mutableListOf<StockEffect>()
+        val newMovements = mutableListOf<StockMovement>()
+        val updatedList = _ingredients.value.map { ingredient ->
+            val used = deductions[ingredient.ingredientId] ?: 0
+            if (used > 0) {
+                val stockBefore = ingredient.currentStock
+                val stockAfter = (stockBefore - used).coerceAtLeast(0)
+                effects.add(
+                    StockEffect(
+                        ingredientId = ingredient.ingredientId,
+                        ingredientName = ingredient.ingredientName,
+                        usedQuantity = used,
+                        usageUnit = ingredient.usageUnit,
+                        stockAfter = stockAfter
+                    )
+                )
+                newMovements.add(
+                    StockMovement(
+                        movementId = nextMovementId++,
+                        ingredientId = ingredient.ingredientId,
+                        movementType = StockMovementType.SALE,
+                        quantity = -used,
+                        stockBefore = stockBefore,
+                        stockAfter = stockAfter,
+                        referenceLabel = saleNumber,
+                        userName = userName,
+                        dateTimeLabel = dateTimeLabel,
+                        description = "Pengurangan otomatis dari $saleNumber"
+                    )
+                )
+                ingredient.copy(currentStock = stockAfter)
+            } else {
+                ingredient
+            }
+        }
+
+        _ingredients.value = updatedList
+        if (newMovements.isNotEmpty()) {
+            _movements.value = newMovements + _movements.value
+        }
+        return effects
     }
 
     fun resetForTesting() {

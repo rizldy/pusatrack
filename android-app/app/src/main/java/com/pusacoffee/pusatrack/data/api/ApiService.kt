@@ -1,11 +1,15 @@
 package com.pusacoffee.pusatrack.data.api
 
+import com.pusacoffee.pusatrack.data.model.ActivityHistoryItem
+import com.pusacoffee.pusatrack.data.model.CreateSaleRequest
+import com.pusacoffee.pusatrack.data.model.DashboardSummary
 import com.pusacoffee.pusatrack.data.model.Ingredient
 import com.pusacoffee.pusatrack.data.model.IngredientUpsertRequest
 import com.pusacoffee.pusatrack.data.model.LoginRequest
 import com.pusacoffee.pusatrack.data.model.LoginResponseData
 import com.pusacoffee.pusatrack.data.model.Product
 import com.pusacoffee.pusatrack.data.model.ProductUpsertRequest
+import com.pusacoffee.pusatrack.data.model.Sale
 import com.pusacoffee.pusatrack.data.model.StockInRequest
 import com.pusacoffee.pusatrack.data.model.StockMovement
 import retrofit2.Response
@@ -29,6 +33,36 @@ interface ApiService {
 
     @GET("auth/me")
     suspend fun getMe(): Response<ApiResponse<LoginResponseData>>
+
+    // M2 — Dashboard Summary
+    @GET("dashboard/summary")
+    suspend fun getDashboardSummary(
+        @Query("date") date: String? = null
+    ): Response<ApiResponse<DashboardSummary>>
+
+    // M3 — Sales (Immutable: no PUT/PATCH/DELETE)
+    @POST("sales")
+    suspend fun createSale(
+        @Body request: CreateSaleRequest
+    ): Response<ApiResponse<Sale>>
+
+    @GET("sales/{id}")
+    suspend fun getSaleDetail(
+        @Path("id") id: Int
+    ): Response<ApiResponse<Sale>>
+
+    // M4 — Activity History (Read-only: no PUT/PATCH/DELETE)
+    @GET("activity-history")
+    suspend fun getActivityHistory(
+        @Query("user_id") userId: Int? = null,
+        @Query("type") type: String? = null,
+        @Query("from") from: String? = null,
+        @Query("to") to: String? = null,
+        @Query("sort") sort: String? = null,
+        @Query("order") order: String? = null,
+        @Query("page") page: Int? = null,
+        @Query("per_page") perPage: Int? = null
+    ): Response<ApiResponse<List<ActivityHistoryItem>>>
 
     // M6 — Inventory (Ingredients & Stock Movements)
     @GET("ingredients")

@@ -30,7 +30,7 @@
         android:id="@+id/cashierFragment"
         android:name="com.pusacoffee.pusatrack.ui.cashier.CashierFragment"
         android:label="@string/nav_cashier"
-        tools:layout="@layout/fragment_placeholder" />
+        tools:layout="@layout/fragment_cashier" />
 
     <fragment
         android:id="@+id/ordersFragment"
@@ -42,7 +42,37 @@
         android:id="@+id/historyFragment"
         android:name="com.pusacoffee.pusatrack.ui.history.HistoryFragment"
         android:label="@string/nav_history"
-        tools:layout="@layout/fragment_placeholder" />
+        tools:layout="@layout/fragment_history" />
+
+    <!-- M3: Cashier Payment & Success (L04, L06) -->
+    <fragment
+        android:id="@+id/paymentFragment"
+        android:name="com.pusacoffee.pusatrack.ui.cashier.PaymentFragment"
+        android:label="Pembayaran"
+        tools:layout="@layout/fragment_payment" />
+
+    <fragment
+        android:id="@+id/transactionSuccessFragment"
+        android:name="com.pusacoffee.pusatrack.ui.cashier.TransactionSuccessFragment"
+        android:label="Transaksi Berhasil"
+        tools:layout="@layout/fragment_transaction_success">
+        <argument
+            android:name="saleId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
+
+    <!-- M4: Transaction Detail (L08) -->
+    <fragment
+        android:id="@+id/transactionDetailFragment"
+        android:name="com.pusacoffee.pusatrack.ui.history.TransactionDetailFragment"
+        android:label="Detail Transaksi"
+        tools:layout="@layout/fragment_transaction_detail">
+        <argument
+            android:name="saleId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
 
     <!-- M6a-M6c: Inventory Detail & Form Screens (L11-L14) -->
     <fragment
