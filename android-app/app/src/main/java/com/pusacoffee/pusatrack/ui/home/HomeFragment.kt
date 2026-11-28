@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -16,9 +15,13 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pusacoffee.pusatrack.MainActivity
 import com.pusacoffee.pusatrack.R
 import com.pusacoffee.pusatrack.data.local.SessionManager
+import com.pusacoffee.pusatrack.data.model.LeadTimeFormatter
+import com.pusacoffee.pusatrack.data.model.OrderStatus
 import com.pusacoffee.pusatrack.data.model.StockStatus
 import com.pusacoffee.pusatrack.data.repository.AuthRepository
+import com.pusacoffee.pusatrack.data.repository.ExpenseRepository
 import com.pusacoffee.pusatrack.data.repository.InventoryRepository
+import com.pusacoffee.pusatrack.data.repository.PurchaseOrderRepository
 import com.pusacoffee.pusatrack.data.repository.SalesRepository
 import com.pusacoffee.pusatrack.databinding.FragmentHomeBinding
 import com.pusacoffee.pusatrack.utils.CurrencyFormatter
@@ -49,24 +52,16 @@ class HomeFragment : Fragment() {
         sessionManager = SessionManager(requireContext())
         authRepository = AuthRepository(requireContext())
 
-        bindStaticHeaderAndTiles()
+        bindHeader()
         observeLiveSummaries()
         setupClickListeners()
     }
 
-    private fun bindStaticHeaderAndTiles() {
+    private fun bindHeader() {
         val fullName = sessionManager.getFullName().orEmpty().ifBlank { "Karyawan" }
-
         binding.tvGreeting.text = DateFormatter.getGreeting()
         binding.tvUserName.text = fullName
         binding.tvHeroDate.text = DateFormatter.formatDate()
-
-        // Expense & Active Order tiles (connected in MS-3)
-        binding.tvExpenseTodayValue.text = CurrencyFormatter.format(40_000L)
-        binding.tvExpenseTodayMeta.text = "2 catatan · Tunai"
-
-        binding.tvActiveOrderCode.text = "PSN-014"
-        binding.tvActiveOrderMeta.text = "2 hari · Perjalanan"
     }
 
     private fun observeLiveSummaries() {
@@ -115,6 +110,31 @@ class HomeFragment : Fragment() {
                         }
                     }
                 }
+
+                launch {
+                    ExpenseRepository.batches.collect {
+                        val todayExp = ExpenseRepository.getTodaySummary()
+                        binding.tvExpenseTodayValue.text = CurrencyFormatter.format(todayExp.totalAmount)
+                        binding.tvExpenseTodayMeta.text = "${todayExp.itemCount} catatan hari ini"
+                    }
+                }
+
+                launch {
+                    PurchaseOrderRepository.orders.collect { orders ->
+                        val active = orders.filter { it.status == OrderStatus.ORDERED }
+                        val firstActive = active.firstOrNull()
+                        if (firstActive != null) {
+                            val elapsedSec = ((System.currentTimeMillis() - firstActive.orderDateMillis) / 1000L)
+                                .coerceAtLeast(60L)
+                            binding.tvActiveOrderCode.text = firstActive.orderNumber
+                            binding.tvActiveOrderMeta.text =
+                                "${active.size} aktif · ${LeadTimeFormatter.formatShort(elapsedSec)}"
+                        } else {
+                            binding.tvActiveOrderCode.text = "0 pesanan"
+                            binding.tvActiveOrderMeta.text = "Semua pesanan diterima"
+                        }
+                    }
+                }
             }
         }
     }
@@ -135,16 +155,14 @@ class HomeFragment : Fragment() {
         }
 
         binding.cardExpenseToday.setOnClickListener {
-            findNavController().navigate(R.id.expensesFragment)
+            findNavController().navigate(R.id.financeFragment)
         }
 
         binding.cardLastTransaction.setOnClickListener {
             val saleId = latestSaleId
             if (saleId != null) {
-                findNavController().navigate(
-                    R.id.transactionDetailFragment,
-                    bundleOf("saleId" to saleId)
-                )
+                val args = Bundle().apply { putInt("saleId", saleId) }
+                findNavController().navigate(R.id.transactionDetailFragment, args)
             } else {
                 mainActivity?.navigateToTab(R.id.historyFragment)
             }

@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_white"
+    tools:context=".ui.finance.FinanceSummaryFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Top App Bar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="12dp">
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                style="@style/Widget.PusaTrack.Button.Back"
+                android:layout_marginEnd="14dp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rekap Keuangan"
+                    android:textAppearance="@style/TextAppearance.PusaTrack.Headline" />
+
+                <TextView
+                    android:id="@+id/tvPeriodLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:textAppearance="@style/TextAppearance.PusaTrack.BodySmall"
+                    tools:text="November 2026" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:paddingHorizontal="20dp"
+            android:paddingBottom="96dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Period Segmented Control (Harian / Mingguan / Bulanan) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:background="@drawable/bg_segmented_track"
+                    android:orientation="horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:id="@+id/btnPeriodDaily"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="@font/plus_jakarta_sans_semibold"
+                        android:gravity="center"
+                        android:text="Harian"
+                        android:textColor="@color/text_muted"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/btnPeriodWeekly"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="@font/plus_jakarta_sans_semibold"
+                        android:gravity="center"
+                        android:text="Mingguan"
+                        android:textColor="@color/text_muted"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/btnPeriodMonthly"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_chip_selected"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="@font/plus_jakarta_sans_semibold"
+                        android:gravity="center"
+                        android:text="Bulanan"
+                        android:textColor="@color/bg_white"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <!-- Hero Card: Estimasi Laba Bersih -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/bg_hero_card"
+                    android:elevation="8dp"
+                    android:orientation="vertical"
+                    android:outlineAmbientShadowColor="@color/shadow_primary"
+                    android:outlineSpotShadowColor="@color/shadow_primary"
+                    android:padding="20dp"
+                    tools:targetApi="p">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/plus_jakarta_sans_semibold"
+                            android:text="Estimasi laba bersih"
+                            android:textColor="@color/primary_forest_soft_text"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/tvNetMarginBadge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_hero_chip"
+                            android:fontFamily="@font/plus_jakarta_sans_semibold"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="4dp"
+                            android:textColor="@color/bg_white"
+                            android:textSize="11sp"
+                            tools:text="22,2% dari penjualan" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvNetProfit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/plus_jakarta_sans_bold"
+                        android:textColor="@color/bg_white"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        tools:text="Rp 1.600.000" />
+                </LinearLayout>
+
+                <!-- Card: Penjualan per Hari (Lightweight Bar Chart) -->
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.PusaTrack.Card.Large"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="18dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Penjualan per periode"
+                            android:textAppearance="@style/TextAppearance.PusaTrack.TitleMedium" />
+
+                        <LinearLayout
+                            android:id="@+id/containerBarChart"
+                            android:layout_width="match_parent"
+                            android:layout_height="126dp"
+                            android:layout_marginTop="14dp"
+                            android:gravity="bottom"
+                            android:orientation="horizontal" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginVertical="12dp"
+                            android:background="@color/outline_divider" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tvAvgSales"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textAppearance="@style/TextAppearance.PusaTrack.BodySmall"
+                                tools:text="Rata-rata: Rp 400.000" />
+
+                            <TextView
+                                android:id="@+id/tvHighestSales"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/plus_jakarta_sans_semibold"
+                                android:textColor="@color/primary_forest"
+                                android:textSize="12sp"
+                                tools:text="Tertinggi: M3 (Rp 2.050.000)" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Card: Rincian Laba -->
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.PusaTrack.Card.Large"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="18dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Rincian laba"
+                            android:textAppearance="@style/TextAppearance.PusaTrack.TitleMedium" />
+
+                        <!-- Penjualan -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Penjualan"
+                                android:textAppearance="@style/TextAppearance.PusaTrack.BodyMedium" />
+
+                            <TextView
+                                android:id="@+id/tvBreakdownSales"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="@style/TextAppearance.PusaTrack.TitleSmall"
+                                tools:text="Rp 7.200.000" />
+                        </LinearLayout>
+
+                        <ProgressBar
+                            android:id="@+id/barSales"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="6dp"
+                            android:layout_marginTop="4dp"
+                            android:max="100"
+                            android:progress="100"
+                            android:progressBackgroundTint="@color/outline_divider"
+                            android:progressTint="@color/primary_forest" />
+
+                        <!-- HPP -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="HPP (bahan baku)"
+                                android:textAppearance="@style/TextAppearance.PusaTrack.BodyMedium" />
+
+                            <TextView
+                                android:id="@+id/tvBreakdownHpp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/plus_jakarta_sans_semibold"
+                                android:textColor="@color/secondary_text"
+                                android:textSize="14sp"
+                                tools:text="-Rp 4.250.000" />
+                        </LinearLayout>
+
+                        <ProgressBar
+                            android:id="@+id/barHpp"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="6dp"
+                            android:layout_marginTop="4dp"
+                            android:max="100"
+                            android:progress="59"
+                            android:progressBackgroundTint="@color/outline_divider"
+                            android:progressTint="@color/secondary_caramel" />
+
+                        <!-- Laba Kotor -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Laba kotor"
+                                android:textAppearance="@style/TextAppearance.PusaTrack.TitleSmall" />
+
+                            <TextView
+                                android:id="@+id/tvBreakdownGross"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/plus_jakarta_sans_bold"
+                                android:textColor="@color/primary_forest"
+                                android:textSize="14sp"
+                                tools:text="Rp 2.950.000" />
+                        </LinearLayout>
+
+                        <!-- Pengeluaran Operasional -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Pengeluaran operasional"
+                                android:textAppearance="@style/TextAppearance.PusaTrack.BodyMedium" />
+
+                            <TextView
+                                android:id="@+id/tvBreakdownExpenses"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/plus_jakarta_sans_semibold"
+                                android:textColor="@color/tertiary_text"
+                                android:textSize="14sp"
+                                tools:text="-Rp 1.350.000" />
+                        </LinearLayout>
+
+                        <ProgressBar
+                            android:id="@+id/barExpenses"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="6dp"
+                            android:layout_marginTop="4dp"
+                            android:max="100"
+                            android:progress="19"
+                            android:progressBackgroundTint="@color/outline_divider"
+                            android:progressTint="@color/tertiary_berry" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Card: Penjualan per Metode Bayar (Stacked Bar) -->
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.PusaTrack.Card.Large"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="18dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Penjualan per metode bayar"
+                            android:textAppearance="@style/TextAppearance.PusaTrack.TitleMedium" />
+
+                        <!-- Stacked Horizontal Bar -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="12dp"
+                            android:layout_marginTop="12dp"
+                            android:background="@color/outline_divider"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:id="@+id/viewCashSegment"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="60"
+                                android:background="@color/primary_forest" />
+
+                            <View
+                                android:id="@+id/viewQrisSegment"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="40"
+                                android:background="@color/secondary_caramel" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:baselineAligned="false"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Tunai"
+                                    android:textAppearance="@style/TextAppearance.PusaTrack.BodySmall" />
+
+                                <TextView
+                                    android:id="@+id/tvCashSalesValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:fontFamily="@font/plus_jakarta_sans_bold"
+                                    android:textColor="@color/primary_forest"
+                                    android:textSize="14sp"
+                                    tools:text="Rp 4.300.000" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="end"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="QRIS"
+                                    android:textAppearance="@style/TextAppearance.PusaTrack.BodySmall" />
+
+                                <TextView
+                                    android:id="@+id/tvQrisSalesValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:fontFamily="@font/plus_jakarta_sans_bold"
+                                    android:textColor="@color/secondary_text"
+                                    android:textSize="14sp"
+                                    tools:text="Rp 2.900.000" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Card: Saldo Kas Awal & Perubahan Kas (Terpisah dari Laba - R-05) -->
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.PusaTrack.Card.Large"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="18dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Kas (terpisah dari laba)"
+                                android:textAppearance="@style/TextAppearance.PusaTrack.TitleMedium" />
+
+                            <TextView
+                                android:id="@+id/btnSetOpeningCash"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:fontFamily="@font/plus_jakarta_sans_semibold"
+                                android:paddingHorizontal="8dp"
+                                android:paddingVertical="4dp"
+                                android:text="Atur kas awal"
+                                android:textColor="@color/primary_forest"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Saldo kas awal"
+                                android:textAppearance="@style/TextAppearance.PusaTrack.BodySmall" />
+
+                            <TextView
+                                android:id="@+id/tvOpeningCash"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="@style/TextAppearance.PusaTrack.TitleSmall"
+                                tools:text="Rp 200.000" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Perubahan kas (Tunai masuk − keluar)"
+                                android:textAppearance="@style/TextAppearance.PusaTrack.BodySmall" />
+
+                            <TextView
+                                android:id="@+id/tvCashChange"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/plus_jakarta_sans_bold"
+                                android:textColor="@color/primary_forest"
+                                android:textSize="14sp"
+                                tools:text="+Rp 3.320.000" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fabRecordExpense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/plus_jakarta_sans_semibold"
+        android:text="Pengeluaran"
+        android:textAllCaps="false"
+        android:textColor="@color/bg_white"
+        app:backgroundTint="@color/primary_forest"
+        app:cornerRadius="28dp"
+        app:icon="@drawable/ic_add"
+        app:iconTint="@color/bg_white" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

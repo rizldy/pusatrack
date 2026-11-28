@@ -3,6 +3,7 @@ package com.pusacoffee.pusatrack.data.repository
 import com.pusacoffee.pusatrack.data.model.ActivityType
 import com.pusacoffee.pusatrack.data.model.Ingredient
 import com.pusacoffee.pusatrack.data.model.ProcurementType
+import com.pusacoffee.pusatrack.data.model.PurchaseOrderDetail
 import com.pusacoffee.pusatrack.data.model.StockEffect
 import com.pusacoffee.pusatrack.data.model.StockMovement
 import com.pusacoffee.pusatrack.data.model.StockMovementType
@@ -304,6 +305,55 @@ object InventoryRepository {
             _movements.value = newMovements + _movements.value
         }
         return effects
+    }
+
+    /**
+     * Atomically receives a purchase order: increases currentStock by quantity * packageSizeSnapshot,
+     * updates packagePrice (HPP) from snapshot, and records PURCHASE StockMovements.
+     */
+    fun receivePurchaseOrderStock(
+        details: List<PurchaseOrderDetail>,
+        orderNumber: String,
+        userName: String,
+        dateTimeLabel: String
+    ) {
+        if (details.isEmpty()) return
+        val detailByIngredient = details.associateBy { it.ingredientId }
+        val newMovements = mutableListOf<StockMovement>()
+
+        val updatedList = _ingredients.value.map { ingredient ->
+            val detail = detailByIngredient[ingredient.ingredientId]
+            if (detail != null) {
+                val addedUsage = detail.totalUsageQuantity
+                val stockBefore = ingredient.currentStock
+                val stockAfter = stockBefore + addedUsage
+                newMovements.add(
+                    StockMovement(
+                        movementId = nextMovementId++,
+                        ingredientId = ingredient.ingredientId,
+                        movementType = StockMovementType.PURCHASE,
+                        quantity = addedUsage,
+                        stockBefore = stockBefore,
+                        stockAfter = stockAfter,
+                        referenceLabel = orderNumber,
+                        userName = userName,
+                        dateTimeLabel = dateTimeLabel,
+                        description = "Penerimaan $orderNumber (+${detail.quantity} ${detail.purchaseUnit})"
+                    )
+                )
+                ingredient.copy(
+                    currentStock = stockAfter,
+                    packagePrice = detail.packagePriceSnapshot
+                )
+            } else {
+                ingredient
+            }
+        }
+
+        _ingredients.value = updatedList
+        if (newMovements.isNotEmpty()) {
+            _movements.value = newMovements + _movements.value
+        }
     }
 
     fun resetForTesting() {

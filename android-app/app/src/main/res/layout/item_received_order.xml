@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.PusaTrack.Card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="15dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvOrderNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.PusaTrack.TitleSmall"
+                tools:text="PSN-013 · Pusat Pusa Coffee" />
+
+            <TextView
+                android:id="@+id/tvReceivedDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:textAppearance="@style/TextAppearance.PusaTrack.BodySmall"
+                tools:text="Diterima Sab, 14 Nov 2026" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvLeadTimeChip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_status_safe"
+            android:fontFamily="@font/plus_jakarta_sans_semibold"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:textColor="@color/primary_forest"
+            android:textSize="12sp"
+            tools:text="3 hr 4 jam" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -36,7 +36,47 @@
         android:id="@+id/ordersFragment"
         android:name="com.pusacoffee.pusatrack.ui.orders.OrdersFragment"
         android:label="@string/nav_orders"
-        tools:layout="@layout/fragment_placeholder" />
+        tools:layout="@layout/fragment_orders" />
+
+    <!-- M7: Purchase Orders & Lead Time (L18-L22) -->
+    <fragment
+        android:id="@+id/receiveOrderFragment"
+        android:name="com.pusacoffee.pusatrack.ui.orders.ReceiveOrderFragment"
+        android:label="Konfirmasi Penerimaan"
+        tools:layout="@layout/fragment_receive_order">
+        <argument
+            android:name="orderId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createOrderFragment"
+        android:name="com.pusacoffee.pusatrack.ui.orders.CreateOrderFragment"
+        android:label="Buat Pesanan"
+        tools:layout="@layout/fragment_create_order" />
+
+    <fragment
+        android:id="@+id/orderCreatedFragment"
+        android:name="com.pusacoffee.pusatrack.ui.orders.OrderCreatedFragment"
+        android:label="Pesanan Dibuat"
+        tools:layout="@layout/fragment_order_created">
+        <argument
+            android:name="orderId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/whatsAppOrderFragment"
+        android:name="com.pusacoffee.pusatrack.ui.orders.WhatsAppOrderFragment"
+        android:label="Pesan WhatsApp"
+        tools:layout="@layout/fragment_whatsapp_order">
+        <argument
+            android:name="orderId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
 
     <fragment
         android:id="@+id/historyFragment"
@@ -169,24 +209,12 @@
             app:argType="boolean" />
     </fragment>
 
+    <!-- M9: Rekap Keuangan (L23) -->
     <fragment
         android:id="@+id/financeFragment"
-        android:name="com.pusacoffee.pusatrack.ui.common.ModulePlaceholderFragment"
+        android:name="com.pusacoffee.pusatrack.ui.finance.FinanceSummaryFragment"
         android:label="@string/menu_finance"
-        tools:layout="@layout/fragment_placeholder">
-        <argument
-            android:name="title"
-            android:defaultValue="Rekap Keuangan"
-            app:argType="string" />
-        <argument
-            android:name="moduleCode"
-            android:defaultValue="L23 · Modul M9"
-            app:argType="string" />
-        <argument
-            android:name="showBackButton"
-            android:defaultValue="true"
-            app:argType="boolean" />
-    </fragment>
+        tools:layout="@layout/fragment_finance_summary" />
 
     <fragment
         android:id="@+id/reportsFragment"
@@ -207,24 +235,12 @@
             app:argType="boolean" />
     </fragment>
 
+    <!-- M8: Catat Pengeluaran (L24) -->
     <fragment
         android:id="@+id/expensesFragment"
-        android:name="com.pusacoffee.pusatrack.ui.common.ModulePlaceholderFragment"
+        android:name="com.pusacoffee.pusatrack.ui.expenses.RecordExpenseFragment"
         android:label="@string/menu_expenses"
-        tools:layout="@layout/fragment_placeholder">
-        <argument
-            android:name="title"
-            android:defaultValue="Catat Pengeluaran"
-            app:argType="string" />
-        <argument
-            android:name="moduleCode"
-            android:defaultValue="L24 · Modul M8"
-            app:argType="string" />
-        <argument
-            android:name="showBackButton"
-            android:defaultValue="true"
-            app:argType="boolean" />
-    </fragment>
+        tools:layout="@layout/fragment_record_expense" />
 
     <fragment
         android:id="@+id/stockCheckFragment"
