@@ -61,6 +61,24 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- Optional Ingredient Photo Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardIngredientPhoto"
+                style="@style/Widget.PusaTrack.Card.Large"
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="10dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/ivIngredientPhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="Foto dokumentasi bahan"
+                    android:scaleType="centerCrop" />
+            </com.google.android.material.card.MaterialCardView>
+
             <!-- Stock Summary Card -->
             <com.google.android.material.card.MaterialCardView
                 style="@style/Widget.PusaTrack.Card.Large"

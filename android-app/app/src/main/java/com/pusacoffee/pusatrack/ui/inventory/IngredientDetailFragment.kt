@@ -14,7 +14,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import coil.load
 import com.pusacoffee.pusatrack.R
+import java.io.File
 import com.pusacoffee.pusatrack.data.model.Ingredient
 import com.pusacoffee.pusatrack.data.model.ProcurementType
 import com.pusacoffee.pusatrack.data.model.StockStatus
@@ -97,6 +99,12 @@ class IngredientDetailFragment : Fragment() {
 
     private fun bindIngredient(item: Ingredient) {
         val ctx = requireContext()
+        val photoFile = item.imagePath?.let { File(it) }?.takeIf { it.exists() }
+        binding.cardIngredientPhoto.isVisible = photoFile != null
+        if (photoFile != null) {
+            binding.ivIngredientPhoto.load(photoFile) { crossfade(true) }
+        }
+
         binding.tvTitle.text = item.ingredientName
         binding.tvSubtitle.text =
             "1 ${item.purchaseUnit} = ${Ingredient.formatNumber(item.packageSize)} ${item.usageUnit} · ${item.procurementType.displayLabel}"

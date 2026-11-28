@@ -14,6 +14,7 @@ import com.pusacoffee.pusatrack.R
 import com.pusacoffee.pusatrack.data.model.LeadTimeFormatter
 import com.pusacoffee.pusatrack.data.model.OrderStatus
 import com.pusacoffee.pusatrack.data.model.PurchaseOrder
+import com.pusacoffee.pusatrack.data.repository.NotificationRepository
 import com.pusacoffee.pusatrack.data.repository.PurchaseOrderRepository
 import com.pusacoffee.pusatrack.databinding.FragmentOrdersBinding
 import com.pusacoffee.pusatrack.databinding.ItemActiveOrderBinding
@@ -47,8 +48,16 @@ class OrdersFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                PurchaseOrderRepository.orders.collect { orders ->
-                    renderOrdersScreen(orders)
+                launch {
+                    PurchaseOrderRepository.orders.collect { orders ->
+                        renderOrdersScreen(orders)
+                    }
+                }
+                launch {
+                    NotificationRepository.unreadCount.collect { unread ->
+                        binding.tvNotificationBadge.isVisible = unread > 0
+                        binding.tvNotificationBadge.text = unread.toString()
+                    }
                 }
             }
         }

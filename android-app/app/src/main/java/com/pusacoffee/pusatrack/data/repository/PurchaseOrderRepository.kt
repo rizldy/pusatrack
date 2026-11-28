@@ -118,6 +118,7 @@ object PurchaseOrderRepository {
         )
 
         _orders.value = listOf(order) + _orders.value
+        NotificationRepository.refresh()
 
         ActivityHistoryRepository.record(
             userId = userId,
@@ -184,6 +185,7 @@ object PurchaseOrderRepository {
         _orders.value = _orders.value.map {
             if (it.orderId == orderId) updated else it
         }
+        NotificationRepository.refresh()
 
         ActivityHistoryRepository.record(
             userId = userId,

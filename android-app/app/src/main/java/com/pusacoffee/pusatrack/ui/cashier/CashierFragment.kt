@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.pusacoffee.pusatrack.R
 import com.pusacoffee.pusatrack.data.local.SessionManager
+import com.pusacoffee.pusatrack.data.repository.NotificationRepository
 import com.pusacoffee.pusatrack.data.repository.ProductRepository
 import com.pusacoffee.pusatrack.databinding.FragmentCashierBinding
 import com.pusacoffee.pusatrack.databinding.ItemCartRowBinding
@@ -71,20 +72,28 @@ class CashierFragment : Fragment() {
     private fun observeMenuAndCart() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                combine(
-                    ProductRepository.products,
-                    cashierViewModel.cart
-                ) { products, cartMap ->
-                    val activeProducts = products.filter { it.isActive }
-                    val menuItems = activeProducts.map { p ->
-                        CashierMenuItem(p, cartMap[p.productId] ?: 0)
+                launch {
+                    combine(
+                        ProductRepository.products,
+                        cashierViewModel.cart
+                    ) { products, cartMap ->
+                        val activeProducts = products.filter { it.isActive }
+                        val menuItems = activeProducts.map { p ->
+                            CashierMenuItem(p, cartMap[p.productId] ?: 0)
+                        }
+                        menuItems to cartMap
+                    }.collect { (menuItems, _) ->
+                        menuAdapter.submitList(menuItems)
+                        binding.tvEmptyMenu.isVisible = menuItems.isEmpty()
+                        binding.rvMenuProducts.isVisible = menuItems.isNotEmpty()
+                        renderCartSection()
                     }
-                    menuItems to cartMap
-                }.collect { (menuItems, _) ->
-                    menuAdapter.submitList(menuItems)
-                    binding.tvEmptyMenu.isVisible = menuItems.isEmpty()
-                    binding.rvMenuProducts.isVisible = menuItems.isNotEmpty()
-                    renderCartSection()
+                }
+                launch {
+                    NotificationRepository.unreadCount.collect { unread ->
+                        binding.tvNotificationBadge.isVisible = unread > 0
+                        binding.tvNotificationBadge.text = unread.toString()
+                    }
                 }
             }
         }

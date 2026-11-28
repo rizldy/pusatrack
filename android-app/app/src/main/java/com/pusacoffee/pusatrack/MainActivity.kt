@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import com.pusacoffee.pusatrack.databinding.ActivityMainBinding
+import com.pusacoffee.pusatrack.utils.NotificationHelper
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        NotificationHelper.ensureChannel(this)
         setupWindowInsets()
         setupNavigation()
         setupBottomNavigation()

@@ -19,6 +19,7 @@ import com.pusacoffee.pusatrack.R
 import com.pusacoffee.pusatrack.data.model.Ingredient
 import com.pusacoffee.pusatrack.data.model.StockStatus
 import com.pusacoffee.pusatrack.data.repository.InventoryRepository
+import com.pusacoffee.pusatrack.data.repository.NotificationRepository
 import com.pusacoffee.pusatrack.databinding.FragmentInventoryBinding
 import kotlinx.coroutines.launch
 
@@ -115,11 +116,19 @@ class InventoryFragment : Fragment() {
     private fun observeIngredients() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                InventoryRepository.ingredients.collect { list ->
-                    allIngredients = list.filter { it.isActive }
-                    updateCountsAndBanner()
-                    updateChipStyles()
-                    applyFilterAndRender()
+                launch {
+                    InventoryRepository.ingredients.collect { list ->
+                        allIngredients = list.filter { it.isActive }
+                        updateCountsAndBanner()
+                        updateChipStyles()
+                        applyFilterAndRender()
+                    }
+                }
+                launch {
+                    NotificationRepository.unreadCount.collect { unread ->
+                        binding.tvNotificationBadge.isVisible = unread > 0
+                        binding.tvNotificationBadge.text = unread.toString()
+                    }
                 }
             }
         }

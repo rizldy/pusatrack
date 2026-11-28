@@ -21,6 +21,7 @@ import com.pusacoffee.pusatrack.data.model.StockStatus
 import com.pusacoffee.pusatrack.data.repository.AuthRepository
 import com.pusacoffee.pusatrack.data.repository.ExpenseRepository
 import com.pusacoffee.pusatrack.data.repository.InventoryRepository
+import com.pusacoffee.pusatrack.data.repository.NotificationRepository
 import com.pusacoffee.pusatrack.data.repository.PurchaseOrderRepository
 import com.pusacoffee.pusatrack.data.repository.SalesRepository
 import com.pusacoffee.pusatrack.databinding.FragmentHomeBinding
@@ -88,15 +89,19 @@ class HomeFragment : Fragment() {
                 }
 
                 launch {
+                    NotificationRepository.unreadCount.collect { unread ->
+                        binding.tvNotificationBadge.isVisible = unread > 0
+                        binding.tvNotificationBadge.text = unread.toString()
+                    }
+                }
+
+                launch {
                     InventoryRepository.ingredients.collect { ingredients ->
                         val lowOrOut = ingredients.filter {
                             it.isActive &&
                                 (it.stockStatus == StockStatus.LOW || it.stockStatus == StockStatus.OUT)
                         }
                         val count = lowOrOut.size
-                        binding.tvNotificationBadge.isVisible = count > 0
-                        binding.tvNotificationBadge.text = count.toString()
-
                         binding.bannerLowStock.isVisible = count > 0
                         if (count > 0) {
                             val names = lowOrOut.joinToString(", ") { it.ingredientName }

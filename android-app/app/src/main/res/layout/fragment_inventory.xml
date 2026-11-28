@@ -45,20 +45,50 @@
                 android:src="@drawable/ic_menu_stock_check"
                 tools:targetApi="p" />
 
-            <!-- Notification Button -->
-            <ImageButton
+            <!-- Notification Button + Unread Badge -->
+            <FrameLayout
                 android:id="@+id/btnNotifications"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:background="@drawable/bg_circle_white"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:clickable="true"
                 android:contentDescription="@string/cd_notifications"
-                android:elevation="6dp"
-                android:outlineAmbientShadowColor="@color/shadow_card"
-                android:outlineSpotShadowColor="@color/shadow_card"
-                android:padding="10dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_notifications"
-                tools:targetApi="p" />
+                android:focusable="true">
+
+                <FrameLayout
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_circle_white"
+                    android:elevation="6dp"
+                    android:outlineAmbientShadowColor="@color/shadow_card"
+                    android:outlineSpotShadowColor="@color/shadow_card"
+                    tools:targetApi="p">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_notifications" />
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/tvNotificationBadge"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="top|end"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="1dp"
+                    android:background="@drawable/bg_badge_count"
+                    android:elevation="8dp"
+                    android:fontFamily="@font/plus_jakarta_sans_bold"
+                    android:gravity="center"
+                    android:textColor="@color/bg_white"
+                    android:textSize="10sp"
+                    android:visibility="gone"
+                    tools:text="2"
+                    tools:visibility="visible" />
+            </FrameLayout>
         </LinearLayout>
 
         <!-- Search Bar -->

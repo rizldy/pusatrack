@@ -4,6 +4,9 @@ import com.pusacoffee.pusatrack.data.model.ActivityType
 import com.pusacoffee.pusatrack.data.model.Ingredient
 import com.pusacoffee.pusatrack.data.model.ProcurementType
 import com.pusacoffee.pusatrack.data.model.PurchaseOrderDetail
+import com.pusacoffee.pusatrack.data.model.StockCountAdjustment
+import com.pusacoffee.pusatrack.data.model.StockCountEntry
+import com.pusacoffee.pusatrack.data.model.StockCountRecord
 import com.pusacoffee.pusatrack.data.model.StockEffect
 import com.pusacoffee.pusatrack.data.model.StockMovement
 import com.pusacoffee.pusatrack.data.model.StockMovementType
@@ -31,6 +34,7 @@ object InventoryRepository {
 
     private var nextIngredientId = 5
     private var nextMovementId = 10
+    private var nextStockCountId = 1
 
     fun getAllIngredients(): List<Ingredient> = _ingredients.value
 
@@ -58,7 +62,8 @@ object InventoryRepository {
         minimumStockPackages: Int,
         procurementType: ProcurementType,
         userName: String,
-        dateTimeLabel: String
+        dateTimeLabel: String,
+        imagePath: String? = null
     ): RepoResult<Ingredient> {
         val trimmedName = name.trim()
         val trimmedPurchaseUnit = purchaseUnit.trim()
@@ -100,10 +105,12 @@ object InventoryRepository {
             minimumStockPackages = minimumStockPackages,
             packagePrice = packagePrice,
             procurementType = procurementType,
-            isActive = true
+            isActive = true,
+            imagePath = imagePath
         )
 
         _ingredients.value = _ingredients.value + newIngredient
+        NotificationRepository.refresh()
 
         if (openingStockUsage > 0) {
             val openingMovement = StockMovement(
@@ -141,7 +148,9 @@ object InventoryRepository {
         packageSize: Int,
         packagePrice: Long,
         minimumStockPackages: Int,
-        procurementType: ProcurementType
+        procurementType: ProcurementType,
+        imagePath: String? = null,
+        updateImage: Boolean = false
     ): RepoResult<Ingredient> {
         val existing = getIngredientById(ingredientId)
             ?: return RepoResult.Error("Bahan baku tidak ditemukan.")
@@ -182,12 +191,15 @@ object InventoryRepository {
             packageSize = packageSize,
             packagePrice = packagePrice,
             minimumStockPackages = minimumStockPackages,
-            procurementType = procurementType
+            procurementType = procurementType,
+            imagePath = if (updateImage) imagePath else existing.imagePath
         )
 
         _ingredients.value = _ingredients.value.map {
             if (it.ingredientId == ingredientId) updated else it
         }
+        NotificationRepository.refresh()
+        NotificationRepository.refresh()
         return RepoResult.Success(updated)
     }
 
@@ -223,6 +235,7 @@ object InventoryRepository {
         _ingredients.value = _ingredients.value.map {
             if (it.ingredientId == ingredientId) updated else it
         }
+        NotificationRepository.refresh()
 
         val placeText = purchasePlace?.trim().takeUnless { it.isNullOrEmpty() }
             ?: "Beli langsung"
@@ -304,6 +317,7 @@ object InventoryRepository {
         if (newMovements.isNotEmpty()) {
             _movements.value = newMovements + _movements.value
         }
+        NotificationRepository.refresh()
         return effects
     }
 
@@ -354,6 +368,100 @@ object InventoryRepository {
         if (newMovements.isNotEmpty()) {
             _movements.value = newMovements + _movements.value
         }
+        NotificationRepository.refresh()
+    }
+
+    /**
+     * Applies physical stock count (M6d, L15-L16).
+     * Only ingredients with delta != 0 are updated, recorded as ADJUSTMENT movements, and logged to ActivityHistory.
+     */
+    fun applyStockCount(
+        entries: List<StockCountEntry>,
+        reason: String,
+        description: String?,
+        userId: Int,
+        userName: String,
+        dateTimeLabel: String
+    ): RepoResult<StockCountRecord> {
+        if (entries.any { it.countedWholePackages < 0 }) {
+            return RepoResult.Error("Jumlah kemasan fisik tidak boleh negatif.")
+        }
+
+        val discrepancies = entries.filter { it.isDiscrepancy }
+        if (discrepancies.isEmpty()) {
+            return RepoResult.Error("Tidak ada selisih stok yang perlu disesuaikan.")
+        }
+
+        val cleanReason = reason.trim().ifEmpty { "Selisih pemeriksaan fisik" }
+        val cleanDesc = description?.trim()?.ifEmpty { null }
+        val discrepancyById = discrepancies.associateBy { it.ingredient.ingredientId }
+        val adjustments = mutableListOf<StockCountAdjustment>()
+        val newMovements = mutableListOf<StockMovement>()
+
+        val updatedList = _ingredients.value.map { ing ->
+            val entry = discrepancyById[ing.ingredientId]
+            if (entry != null) {
+                val stockBefore = ing.currentStock
+                val stockAfter = entry.physicalStock.coerceAtLeast(0)
+                val delta = stockAfter - stockBefore
+                adjustments.add(
+                    StockCountAdjustment(
+                        ingredientId = ing.ingredientId,
+                        ingredientName = ing.ingredientName,
+                        usageUnit = ing.usageUnit,
+                        stockBefore = stockBefore,
+                        stockAfter = stockAfter,
+                        delta = delta
+                    )
+                )
+                newMovements.add(
+                    StockMovement(
+                        movementId = nextMovementId++,
+                        ingredientId = ing.ingredientId,
+                        movementType = StockMovementType.ADJUSTMENT,
+                        quantity = delta,
+                        stockBefore = stockBefore,
+                        stockAfter = stockAfter,
+                        referenceLabel = cleanReason,
+                        userName = userName,
+                        dateTimeLabel = dateTimeLabel,
+                        description = cleanDesc ?: cleanReason
+                    )
+                )
+                ing.copy(currentStock = stockAfter)
+            } else {
+                ing
+            }
+        }
+
+        _ingredients.value = updatedList
+        _movements.value = newMovements + _movements.value
+        NotificationRepository.refresh()
+
+        for (adj in adjustments) {
+            val sign = if (adj.delta >= 0) "+" else "-"
+            val absDelta = kotlin.math.abs(adj.delta)
+            ActivityHistoryRepository.record(
+                userId = userId,
+                userName = userName,
+                activityType = ActivityType.STOCK,
+                title = "Stok disesuaikan",
+                subtitle = "${adj.ingredientName} · $cleanReason",
+                amountOrDelta = "$sign${Ingredient.formatNumber(absDelta)} ${adj.usageUnit}",
+                isNegativeDelta = adj.delta < 0
+            )
+        }
+
+        return RepoResult.Success(
+            StockCountRecord(
+                countId = nextStockCountId++,
+                userName = userName,
+                dateTimeLabel = dateTimeLabel,
+                reason = cleanReason,
+                description = cleanDesc,
+                adjustments = adjustments
+            )
+        )
     }
 
     fun resetForTesting() {

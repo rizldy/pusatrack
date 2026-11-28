@@ -4,11 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import coil.load
 import com.pusacoffee.pusatrack.R
 import com.pusacoffee.pusatrack.data.local.SessionManager
 import com.pusacoffee.pusatrack.data.model.Ingredient
@@ -17,6 +20,8 @@ import com.pusacoffee.pusatrack.data.repository.InventoryRepository
 import com.pusacoffee.pusatrack.data.repository.RepoResult
 import com.pusacoffee.pusatrack.databinding.FragmentIngredientFormBinding
 import com.pusacoffee.pusatrack.utils.DateFormatter
+import com.pusacoffee.pusatrack.utils.IntentHelper
+import java.io.File
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -26,6 +31,32 @@ class AddIngredientFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var selectedProcurement: ProcurementType = ProcurementType.SUPPLIED
+    private var selectedPhotoPath: String? = null
+    private var pendingCameraFile: File? = null
+
+    private val takePictureLauncher = registerForActivityResult(
+        ActivityResultContracts.TakePicture()
+    ) { success ->
+        val file = pendingCameraFile
+        if (success && file != null && file.exists()) {
+            selectedPhotoPath = file.absolutePath
+            updatePhotoPreview()
+        }
+    }
+
+    private val pickGalleryLauncher = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri ->
+        if (uri != null) {
+            val savedPath = IntentHelper.copyImageUriToInternalStorage(requireContext(), uri)
+            if (savedPath != null) {
+                selectedPhotoPath = savedPath
+                updatePhotoPreview()
+            } else {
+                Toast.makeText(requireContext(), "Gagal memuat foto dari galeri.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,6 +77,19 @@ class AddIngredientFragment : Fragment() {
         binding.bannerOpeningStockInfo.isVisible = true
 
         binding.btnBack.setOnClickListener { findNavController().navigateUp() }
+
+        binding.btnTakePhoto.setOnClickListener {
+            val (file, uri) = IntentHelper.createCameraPhotoTarget(requireContext())
+            pendingCameraFile = file
+            takePictureLauncher.launch(uri)
+        }
+        binding.btnPickGallery.setOnClickListener {
+            pickGalleryLauncher.launch("image/*")
+        }
+        binding.btnRemovePhoto.setOnClickListener {
+            selectedPhotoPath = null
+            updatePhotoPreview()
+        }
 
         binding.btnProcurementSupplied.setOnClickListener {
             selectedProcurement = ProcurementType.SUPPLIED
@@ -68,8 +112,19 @@ class AddIngredientFragment : Fragment() {
 
         binding.btnSubmit.setOnClickListener { submitForm() }
 
+        updatePhotoPreview()
         updateProcurementUi()
         updateLivePreviews()
+    }
+
+    private fun updatePhotoPreview() {
+        val file = selectedPhotoPath?.let { File(it) }?.takeIf { it.exists() }
+        binding.ivPhotoPreview.isVisible = file != null
+        binding.ivPhotoPlaceholder.isVisible = file == null
+        binding.btnRemovePhoto.isVisible = file != null
+        if (file != null) {
+            binding.ivPhotoPreview.load(file) { crossfade(true) }
+        }
     }
 
     private fun updateProcurementUi() {
@@ -139,7 +194,8 @@ class AddIngredientFragment : Fragment() {
                 minimumStockPackages = minPkg,
                 procurementType = selectedProcurement,
                 userName = userName,
-                dateTimeLabel = dateTimeLabel
+                dateTimeLabel = dateTimeLabel,
+                imagePath = selectedPhotoPath
             )
         ) {
             is RepoResult.Success -> findNavController().navigateUp()

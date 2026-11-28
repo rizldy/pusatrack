@@ -19,6 +19,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pusacoffee.pusatrack.R
 import com.pusacoffee.pusatrack.data.model.ActivityType
 import com.pusacoffee.pusatrack.data.repository.ActivityHistoryRepository
+import com.pusacoffee.pusatrack.data.repository.NotificationRepository
 import com.pusacoffee.pusatrack.databinding.FragmentHistoryBinding
 import com.pusacoffee.pusatrack.utils.DateFormatter
 import kotlinx.coroutines.launch
@@ -212,9 +213,17 @@ class HistoryFragment : Fragment() {
     private fun observeHistory() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                ActivityHistoryRepository.items.collect {
-                    updateTypeChipStyles()
-                    applyFilterAndRender()
+                launch {
+                    ActivityHistoryRepository.items.collect {
+                        updateTypeChipStyles()
+                        applyFilterAndRender()
+                    }
+                }
+                launch {
+                    NotificationRepository.unreadCount.collect { unread ->
+                        binding.tvNotificationBadge.isVisible = unread > 0
+                        binding.tvNotificationBadge.text = unread.toString()
+                    }
                 }
             }
         }

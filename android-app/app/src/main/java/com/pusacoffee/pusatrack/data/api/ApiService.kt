@@ -1,12 +1,15 @@
 package com.pusacoffee.pusatrack.data.api
 
 import com.pusacoffee.pusatrack.data.model.ActivityHistoryItem
+import com.pusacoffee.pusatrack.data.model.AppNotification
 import com.pusacoffee.pusatrack.data.model.CashBalanceData
 import com.pusacoffee.pusatrack.data.model.CashBalanceRequest
 import com.pusacoffee.pusatrack.data.model.CreateExpensesRequest
 import com.pusacoffee.pusatrack.data.model.CreatePurchaseOrderRequest
 import com.pusacoffee.pusatrack.data.model.CreateSaleRequest
+import com.pusacoffee.pusatrack.data.model.CreateStockCountRequest
 import com.pusacoffee.pusatrack.data.model.DashboardSummary
+import com.pusacoffee.pusatrack.data.model.DeviceTokenRequest
 import com.pusacoffee.pusatrack.data.model.ExpenseBatch
 import com.pusacoffee.pusatrack.data.model.ExpenseCategory
 import com.pusacoffee.pusatrack.data.model.FinanceSummary
@@ -19,14 +22,20 @@ import com.pusacoffee.pusatrack.data.model.Product
 import com.pusacoffee.pusatrack.data.model.ProductUpsertRequest
 import com.pusacoffee.pusatrack.data.model.PurchaseOrder
 import com.pusacoffee.pusatrack.data.model.ReceiveOrderRequest
+import com.pusacoffee.pusatrack.data.model.ReportExportRequest
+import com.pusacoffee.pusatrack.data.model.ReportExportResponse
 import com.pusacoffee.pusatrack.data.model.Sale
+import com.pusacoffee.pusatrack.data.model.StockCountRecord
 import com.pusacoffee.pusatrack.data.model.StockInRequest
 import com.pusacoffee.pusatrack.data.model.StockMovement
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -178,4 +187,36 @@ interface ApiService {
     suspend fun saveCashBalance(
         @Body request: CashBalanceRequest
     ): Response<ApiResponse<CashBalanceData>>
+
+    // M6d — Stock Counts (Pemeriksaan Fisik)
+    @POST("stock-counts")
+    suspend fun submitStockCount(
+        @Body request: CreateStockCountRequest
+    ): Response<ApiResponse<StockCountRecord>>
+
+    // M6 — Ingredient Photo Upload
+    @Multipart
+    @POST("ingredients/{id}/image")
+    suspend fun uploadIngredientImage(
+        @Path("id") id: Int,
+        @Part image: MultipartBody.Part
+    ): Response<ApiResponse<Ingredient>>
+
+    // M10 — Reports & Export (.xlsx)
+    @POST("reports/export")
+    suspend fun exportReport(
+        @Body request: ReportExportRequest
+    ): Response<ApiResponse<ReportExportResponse>>
+
+    // M5 — Notifications & FCM Device Token Registration
+    @GET("notifications")
+    suspend fun getNotifications(): Response<ApiResponse<List<AppNotification>>>
+
+    @POST("notifications/read")
+    suspend fun markNotificationsRead(): Response<ApiResponse<Unit>>
+
+    @POST("devices")
+    suspend fun registerDeviceToken(
+        @Body request: DeviceTokenRequest
+    ): Response<ApiResponse<Unit>>
 }

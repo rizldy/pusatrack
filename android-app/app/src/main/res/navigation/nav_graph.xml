@@ -189,25 +189,12 @@
         android:label="Tambah Produk"
         tools:layout="@layout/fragment_product_form" />
 
-    <!-- Secondary Placeholder Destinations (MS-2 to MS-4) -->
+    <!-- M5: Notifikasi Operasional (L09) -->
     <fragment
         android:id="@+id/notificationsFragment"
-        android:name="com.pusacoffee.pusatrack.ui.common.ModulePlaceholderFragment"
+        android:name="com.pusacoffee.pusatrack.ui.notifications.NotificationsFragment"
         android:label="@string/cd_notifications"
-        tools:layout="@layout/fragment_placeholder">
-        <argument
-            android:name="title"
-            android:defaultValue="Notifikasi"
-            app:argType="string" />
-        <argument
-            android:name="moduleCode"
-            android:defaultValue="L09 · Modul M5"
-            app:argType="string" />
-        <argument
-            android:name="showBackButton"
-            android:defaultValue="true"
-            app:argType="boolean" />
-    </fragment>
+        tools:layout="@layout/fragment_notifications" />
 
     <!-- M9: Rekap Keuangan (L23) -->
     <fragment
@@ -216,24 +203,12 @@
         android:label="@string/menu_finance"
         tools:layout="@layout/fragment_finance_summary" />
 
+    <!-- M10: Laporan & Ekspor .xlsx (L26) -->
     <fragment
         android:id="@+id/reportsFragment"
-        android:name="com.pusacoffee.pusatrack.ui.common.ModulePlaceholderFragment"
+        android:name="com.pusacoffee.pusatrack.ui.reports.ReportsFragment"
         android:label="@string/menu_reports"
-        tools:layout="@layout/fragment_placeholder">
-        <argument
-            android:name="title"
-            android:defaultValue="Laporan &amp; Ekspor"
-            app:argType="string" />
-        <argument
-            android:name="moduleCode"
-            android:defaultValue="L26 · Modul M10"
-            app:argType="string" />
-        <argument
-            android:name="showBackButton"
-            android:defaultValue="true"
-            app:argType="boolean" />
-    </fragment>
+        tools:layout="@layout/fragment_reports" />
 
     <!-- M8: Catat Pengeluaran (L24) -->
     <fragment
@@ -242,24 +217,12 @@
         android:label="@string/menu_expenses"
         tools:layout="@layout/fragment_record_expense" />
 
+    <!-- M6d: Pemeriksaan Fisik / Stok Opname (L15) -->
     <fragment
         android:id="@+id/stockCheckFragment"
-        android:name="com.pusacoffee.pusatrack.ui.common.ModulePlaceholderFragment"
+        android:name="com.pusacoffee.pusatrack.ui.inventory.StockCheckFragment"
         android:label="@string/menu_stock_check"
-        tools:layout="@layout/fragment_placeholder">
-        <argument
-            android:name="title"
-            android:defaultValue="Pemeriksaan Fisik"
-            app:argType="string" />
-        <argument
-            android:name="moduleCode"
-            android:defaultValue="L15 · Modul M6"
-            app:argType="string" />
-        <argument
-            android:name="showBackButton"
-            android:defaultValue="true"
-            app:argType="boolean" />
-    </fragment>
+        tools:layout="@layout/fragment_stock_check" />
 
     <fragment
         android:id="@+id/accountsFragment"

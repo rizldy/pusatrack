@@ -4,14 +4,17 @@ import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.pusacoffee.pusatrack.R
 import com.pusacoffee.pusatrack.data.model.Ingredient
 import com.pusacoffee.pusatrack.data.model.StockStatus
 import com.pusacoffee.pusatrack.databinding.ItemIngredientBinding
 import com.pusacoffee.pusatrack.utils.CurrencyFormatter
+import java.io.File
 
 class IngredientAdapter(
     private val onItemClick: (Ingredient) -> Unit
@@ -37,6 +40,17 @@ class IngredientAdapter(
         fun bind(item: Ingredient) {
             val ctx = binding.root.context
             binding.tvInitial.text = buildInitials(item.ingredientName)
+
+            val photoFile = item.imagePath?.let { File(it) }?.takeIf { it.exists() }
+            if (photoFile != null) {
+                binding.ivIngredientPhoto.isVisible = true
+                binding.tvInitial.isVisible = false
+                binding.ivIngredientPhoto.load(photoFile) { crossfade(true) }
+            } else {
+                binding.ivIngredientPhoto.isVisible = false
+                binding.tvInitial.isVisible = true
+            }
+
             binding.tvIngredientName.text = item.ingredientName
             binding.tvStockPrimary.text =
                 "${item.formatCurrentStockUsage()} (${item.formatPackageBreakdown()})"
