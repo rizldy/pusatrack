@@ -1,7 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.PUSATRACK" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+
+    <!-- Always Light Mode — identical to values/themes.xml -->
+    <style name="Base.Theme.PusaTrack" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary_forest</item>
+        <item name="colorOnPrimary">@color/bg_white</item>
+        <item name="colorPrimaryContainer">@color/primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/primary_on_container</item>
+
+        <item name="colorSecondary">@color/secondary_caramel</item>
+        <item name="colorOnSecondary">@color/bg_white</item>
+        <item name="colorSecondaryContainer">@color/secondary_container</item>
+        <item name="colorOnSecondaryContainer">@color/secondary_text</item>
+
+        <item name="colorTertiary">@color/tertiary_berry</item>
+        <item name="colorOnTertiary">@color/bg_white</item>
+        <item name="colorTertiaryContainer">@color/tertiary_container</item>
+        <item name="colorOnTertiaryContainer">@color/tertiary_text</item>
+        <item name="colorError">@color/tertiary_berry</item>
+        <item name="colorOnError">@color/bg_white</item>
+        <item name="colorErrorContainer">@color/tertiary_container</item>
+        <item name="colorOnErrorContainer">@color/tertiary_text</item>
+
+        <item name="android:colorBackground">@color/bg_white</item>
+        <item name="android:windowBackground">@color/bg_white</item>
+        <item name="colorSurface">@color/surface_card</item>
+        <item name="colorOnSurface">@color/text_ink</item>
+        <item name="colorSurfaceVariant">@color/surface_tonal</item>
+        <item name="colorOnSurfaceVariant">@color/text_muted</item>
+        <item name="colorOutline">@color/outline_muted</item>
+        <item name="colorOutlineVariant">@color/outline_divider</item>
+
+        <item name="android:statusBarColor">@color/bg_white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/bg_white</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+
+        <item name="android:fontFamily">@font/plus_jakarta_sans</item>
+        <item name="fontFamily">@font/plus_jakarta_sans</item>
+        <item name="android:textColor">@color/text_ink</item>
+        <item name="android:textColorHint">@color/text_hint</item>
     </style>
+
+    <style name="Theme.PusaTrack" parent="Base.Theme.PusaTrack" />
+
 </resources>

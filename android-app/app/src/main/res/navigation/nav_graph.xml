@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <!-- L01: Login -->
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.pusacoffee.pusatrack.ui.login.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login" />
+
+    <!-- 5 Root Bottom Navigation Tabs -->
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.pusacoffee.pusatrack.ui.home.HomeFragment"
+        android:label="@string/nav_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/inventoryFragment"
+        android:name="com.pusacoffee.pusatrack.ui.inventory.InventoryFragment"
+        android:label="@string/nav_inventory"
+        tools:layout="@layout/fragment_placeholder" />
+
+    <fragment
+        android:id="@+id/cashierFragment"
+        android:name="com.pusacoffee.pusatrack.ui.cashier.CashierFragment"
+        android:label="@string/nav_cashier"
+        tools:layout="@layout/fragment_placeholder" />
+
+    <fragment
+        android:id="@+id/ordersFragment"
+        android:name="com.pusacoffee.pusatrack.ui.orders.OrdersFragment"
+        android:label="@string/nav_orders"
+        tools:layout="@layout/fragment_placeholder" />
+
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.pusacoffee.pusatrack.ui.history.HistoryFragment"
+        android:label="@string/nav_history"
+        tools:layout="@layout/fragment_placeholder" />
+
+    <!-- Secondary Destinations (Detail / Menu Lainnya — Bottom Nav Hidden) -->
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.pusacoffee.pusatrack.ui.common.ModulePlaceholderFragment"
+        android:label="@string/cd_notifications"
+        tools:layout="@layout/fragment_placeholder">
+        <argument
+            android:name="title"
+            android:defaultValue="Notifikasi"
+            app:argType="string" />
+        <argument
+            android:name="moduleCode"
+            android:defaultValue="L09 · Modul M5"
+            app:argType="string" />
+        <argument
+            android:name="showBackButton"
+            android:defaultValue="true"
+            app:argType="boolean" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/financeFragment"
+        android:name="com.pusacoffee.pusatrack.ui.common.ModulePlaceholderFragment"
+        android:label="@string/menu_finance"
+        tools:layout="@layout/fragment_placeholder">
+        <argument
+            android:name="title"
+            android:defaultValue="Rekap Keuangan"
+            app:argType="string" />
+        <argument
+            android:name="moduleCode"
+            android:defaultValue="L23 · Modul M9"
+            app:argType="string" />
+        <argument
+            android:name="showBackButton"
+            android:defaultValue="true"
+            app:argType="boolean" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/reportsFragment"
+        android:name="com.pusacoffee.pusatrack.ui.common.ModulePlaceholderFragment"
+        android:label="@string/menu_reports"
+        tools:layout="@layout/fragment_placeholder">
+        <argument
+            android:name="title"
+            android:defaultValue="Laporan &amp; Ekspor"
+            app:argType="string" />
+        <argument
+            android:name="moduleCode"
+            android:defaultValue="L26 · Modul M10"
+            app:argType="string" />
+        <argument
+            android:name="showBackButton"
+            android:defaultValue="true"
+            app:argType="boolean" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/expensesFragment"
+        android:name="com.pusacoffee.pusatrack.ui.common.ModulePlaceholderFragment"
+        android:label="@string/menu_expenses"
+        tools:layout="@layout/fragment_placeholder">
+        <argument
+            android:name="title"
+            android:defaultValue="Catat Pengeluaran"
+            app:argType="string" />
+        <argument
+            android:name="moduleCode"
+            android:defaultValue="L24 · Modul M8"
+            app:argType="string" />
+        <argument
+            android:name="showBackButton"
+            android:defaultValue="true"
+            app:argType="boolean" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/productsFragment"
+        android:name="com.pusacoffee.pusatrack.ui.common.ModulePlaceholderFragment"
+        android:label="@string/menu_products"
+        tools:layout="@layout/fragment_placeholder">
+        <argument
+            android:name="title"
+            android:defaultValue="Produk &amp; Resep"
+            app:argType="string" />
+        <argument
+            android:name="moduleCode"
+            android:defaultValue="L29 · Modul M11"
+            app:argType="string" />
+        <argument
+            android:name="showBackButton"
+            android:defaultValue="true"
+            app:argType="boolean" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/stockCheckFragment"
+        android:name="com.pusacoffee.pusatrack.ui.common.ModulePlaceholderFragment"
+        android:label="@string/menu_stock_check"
+        tools:layout="@layout/fragment_placeholder">
+        <argument
+            android:name="title"
+            android:defaultValue="Pemeriksaan Fisik"
+            app:argType="string" />
+        <argument
+            android:name="moduleCode"
+            android:defaultValue="L15 · Modul M6"
+            app:argType="string" />
+        <argument
+            android:name="showBackButton"
+            android:defaultValue="true"
+            app:argType="boolean" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/accountsFragment"
+        android:name="com.pusacoffee.pusatrack.ui.common.ModulePlaceholderFragment"
+        android:label="@string/menu_accounts"
+        tools:layout="@layout/fragment_placeholder">
+        <argument
+            android:name="title"
+            android:defaultValue="Manajemen Akun"
+            app:argType="string" />
+        <argument
+            android:name="moduleCode"
+            android:defaultValue="L33 · Modul M12"
+            app:argType="string" />
+        <argument
+            android:name="showBackButton"
+            android:defaultValue="true"
+            app:argType="boolean" />
+    </fragment>
+
+</navigation>

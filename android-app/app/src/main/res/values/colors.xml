@@ -1,5 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Surface / Background -->
+    <color name="bg_white">#FFFFFF</color>
+    <color name="surface_card">#FFFFFF</color>
+    <color name="surface_tonal">#F3F6F4</color>
+    <color name="outline_divider">#EEF1EF</color>
+    <color name="outline_muted">#D6DDD9</color>
+    <color name="scrim_dark">#8C0B1A13</color>
+
+    <!-- Soft Shadow Tints -->
+    <color name="shadow_card">#2214231B</color>
+    <color name="shadow_primary">#3817402F</color>
+
+    <!-- Text / Neutral -->
+    <color name="text_ink">#14231B</color>
+    <color name="text_muted">#69776F</color>
+    <color name="text_hint">#9AA6A0</color>
+    <color name="nav_inactive">#7C8982</color>
+
+    <!-- Primary (Forest Green) -->
+    <color name="primary_forest">#17402F</color>
+    <color name="primary_on_container">#0E2B20</color>
+    <color name="primary_container">#E3EEE6</color>
+    <color name="primary_surface_soft">#EAF3EC</color>
+    <color name="primary_forest_soft_text">#CFE2D5</color>
+
+    <!-- Secondary (Caramel / Warning) -->
+    <color name="secondary_caramel">#C98A2E</color>
+    <color name="secondary_text">#8A5A12</color>
+    <color name="secondary_container">#FCF1DE</color>
+    <color name="secondary_surface_soft">#FFF9EE</color>
+
+    <!-- Tertiary (Berry / Error / Alert) -->
+    <color name="tertiary_berry">#A9475A</color>
+    <color name="tertiary_text">#8B2F40</color>
+    <color name="tertiary_container">#FAE6E9</color>
+
+    <!-- Launcher / System defaults -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>

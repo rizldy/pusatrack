@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Spacing -->
+    <dimen name="spacing_xs">4dp</dimen>
+    <dimen name="spacing_sm">8dp</dimen>
+    <dimen name="spacing_md">12dp</dimen>
+    <dimen name="spacing_lg">16dp</dimen>
+    <dimen name="spacing_xl">24dp</dimen>
+    <dimen name="spacing_2xl">32dp</dimen>
+
+    <!-- Corner Radii -->
+    <dimen name="radius_input">15dp</dimen>
+    <dimen name="radius_tile">18dp</dimen>
+    <dimen name="radius_card">20dp</dimen>
+    <dimen name="radius_card_lg">24dp</dimen>
+    <dimen name="radius_pill">28dp</dimen>
+    <dimen name="radius_sheet_top">34dp</dimen>
+
+    <!-- Elevation & Stroke -->
+    <dimen name="card_elevation">6dp</dimen>
+    <dimen name="card_stroke_width">0dp</dimen>
+    <dimen name="input_focus_stroke_width">1.8dp</dimen>
+
+    <!-- Interactive Targets -->
+    <dimen name="touch_target_min">48dp</dimen>
+    <dimen name="back_button_size">44dp</dimen>
+    <dimen name="bottom_nav_height">72dp</dimen>
+    <dimen name="kasir_fab_size">60dp</dimen>
+</resources>

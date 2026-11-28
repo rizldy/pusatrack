@@ -5,15 +5,230 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg_white"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/navHostFragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavWrapper"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navGraph="@navigation/nav_graph" />
+
+    <!-- Custom 5-Tab Bottom Navigation Bar (v7) -->
+    <FrameLayout
+        android:id="@+id/bottomNavWrapper"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:visibility="visible">
+
+        <!-- White Navigation Bar Surface -->
+        <LinearLayout
+            android:id="@+id/bottomNavBar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/bottom_nav_height"
+            android:layout_gravity="bottom"
+            android:background="@color/bg_white"
+            android:baselineAligned="false"
+            android:elevation="12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:outlineAmbientShadowColor="@color/shadow_card"
+            android:outlineSpotShadowColor="@color/shadow_card"
+            android:paddingHorizontal="6dp"
+            tools:targetApi="p">
+
+            <!-- Tab 1: Beranda -->
+            <LinearLayout
+                android:id="@+id/tabHome"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:minHeight="@dimen/touch_target_min"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/ivTabHome"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_nav_home" />
+
+                <TextView
+                    android:id="@+id/tvTabHome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/plus_jakarta_sans_semibold"
+                    android:text="@string/nav_home"
+                    android:textColor="@color/nav_inactive"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <!-- Tab 2: Inventori -->
+            <LinearLayout
+                android:id="@+id/tabInventory"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:minHeight="@dimen/touch_target_min"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/ivTabInventory"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_nav_inventory" />
+
+                <TextView
+                    android:id="@+id/tvTabInventory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/plus_jakarta_sans_semibold"
+                    android:text="@string/nav_inventory"
+                    android:textColor="@color/nav_inactive"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <!-- Tab 3 (Center): Kasir label spacer under floating FAB -->
+            <LinearLayout
+                android:id="@+id/tabCashierLabelArea"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="bottom|center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="9dp">
+
+                <TextView
+                    android:id="@+id/tvTabCashier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/plus_jakarta_sans_bold"
+                    android:text="@string/nav_cashier"
+                    android:textColor="@color/nav_inactive"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <!-- Tab 4: Pesanan -->
+            <LinearLayout
+                android:id="@+id/tabOrders"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:minHeight="@dimen/touch_target_min"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/ivTabOrders"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_nav_orders" />
+
+                <TextView
+                    android:id="@+id/tvTabOrders"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/plus_jakarta_sans_semibold"
+                    android:text="@string/nav_orders"
+                    android:textColor="@color/nav_inactive"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <!-- Tab 5: Riwayat -->
+            <LinearLayout
+                android:id="@+id/tabHistory"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:minHeight="@dimen/touch_target_min"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/ivTabHistory"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_nav_history" />
+
+                <TextView
+                    android:id="@+id/tvTabHistory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/plus_jakarta_sans_semibold"
+                    android:text="@string/nav_history"
+                    android:textColor="@color/nav_inactive"
+                    android:textSize="11sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Subtle top hairline divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="top"
+            android:background="@color/outline_divider"
+            android:elevation="12dp" />
+
+        <!-- Center Prominent Circular Green Kasir Button (protruding upward) -->
+        <FrameLayout
+            android:id="@+id/tabCashierFab"
+            android:layout_width="@dimen/kasir_fab_size"
+            android:layout_height="@dimen/kasir_fab_size"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="-18dp"
+            android:background="@drawable/bg_kasir_fab"
+            android:clickable="true"
+            android:contentDescription="@string/nav_cashier"
+            android:elevation="16dp"
+            android:focusable="true"
+            android:outlineAmbientShadowColor="@color/shadow_primary"
+            android:outlineSpotShadowColor="@color/shadow_primary"
+            tools:targetApi="p">
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_gravity="center"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_nav_cashier" />
+        </FrameLayout>
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,3 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">PUSATRACK</string>
+    <string name="brand_name">Pusa Coffee</string>
+    <string name="brand_subtitle">Inventory &amp; Financial Tracking System</string>
+    <string name="branch_footer">Pusa Coffee Cabang BTP · PUSATRACK v1.0</string>
+
+    <!-- Login (L01) -->
+    <string name="login_title">Selamat datang kembali</string>
+    <string name="login_subtitle">Masuk dengan akun pribadimu untuk mulai bekerja.</string>
+    <string name="login_label_username">Username</string>
+    <string name="login_hint_username">Masukkan username</string>
+    <string name="login_label_password">Password</string>
+    <string name="login_hint_password">Masukkan password</string>
+    <string name="login_button">Masuk</string>
+    <string name="login_button_loading">Memproses…</string>
+    <string name="login_forgot_hint">Lupa password? Minta tim untuk mereset akunmu.</string>
+    <string name="login_error_empty">Masukkan username dan password terlebih dahulu.</string>
+    <string name="login_error_generic">Username atau password tidak sesuai, atau akun sedang tidak aktif.</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_home">Beranda</string>
+    <string name="nav_inventory">Inventori</string>
+    <string name="nav_cashier">Kasir</string>
+    <string name="nav_orders">Pesanan</string>
+    <string name="nav_history">Riwayat</string>
+
+    <!-- Home (L02) -->
+    <string name="home_greeting_morning">Selamat pagi,</string>
+    <string name="home_greeting_afternoon">Selamat siang,</string>
+    <string name="home_greeting_evening">Selamat sore,</string>
+    <string name="home_greeting_night">Selamat malam,</string>
+    <string name="home_hero_title">Ringkasan hari ini</string>
+    <string name="home_hero_button_cashier">Buka Kasir</string>
+    <string name="home_tile_expense_label">Pengeluaran hari ini</string>
+    <string name="home_tile_last_trx_label">Transaksi terakhir</string>
+    <string name="home_tile_low_stock_label">Perlu distok</string>
+    <string name="home_tile_active_order_label">Pesanan berjalan</string>
+    <string name="home_low_stock_title">Stok menipis terdeteksi</string>
+    <string name="home_low_stock_subtitle">2 bahan baku berada di bawah batas minimum</string>
+    <string name="home_low_stock_action">Lihat</string>
+    <string name="home_other_menu_title">Menu lainnya</string>
+
+    <!-- Menu Lainnya -->
+    <string name="menu_finance">Keuangan</string>
+    <string name="menu_reports">Laporan</string>
+    <string name="menu_expenses">Pengeluaran</string>
+    <string name="menu_products">Produk</string>
+    <string name="menu_stock_check">Cek Fisik</string>
+    <string name="menu_accounts">Akun</string>
+    <string name="menu_logout">Keluar</string>
+
+    <!-- Logout Dialog -->
+    <string name="logout_dialog_title">Keluar dari PUSATRACK?</string>
+    <string name="logout_dialog_message">Sesi akun aktif akan dihapus dari perangkat ini. Kamu perlu masuk kembali untuk melanjutkan bekerja.</string>
+    <string name="logout_confirm">Ya, Keluar</string>
+    <string name="action_cancel">Batal</string>
+
+    <!-- Placeholder -->
+    <string name="placeholder_badge">Segera Hadir · Tahap Berikutnya</string>
+    <string name="placeholder_desc">Halaman ini merupakan kerangka navigasi MS-0 Fondasi dan akan dilengkapi pada milestone berikutnya.</string>
+
+    <!-- Content Descriptions -->
+    <string name="cd_back">Kembali</string>
+    <string name="cd_notifications">Notifikasi</string>
+    <string name="cd_toggle_password">Tampilkan atau sembunyikan password</string>
+    <string name="cd_brand_logo">Logo Pusa Coffee</string>
 </resources>
