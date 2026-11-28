@@ -8,6 +8,7 @@ import com.pusacoffee.pusatrack.data.model.CreateExpensesRequest
 import com.pusacoffee.pusatrack.data.model.CreatePurchaseOrderRequest
 import com.pusacoffee.pusatrack.data.model.CreateSaleRequest
 import com.pusacoffee.pusatrack.data.model.CreateStockCountRequest
+import com.pusacoffee.pusatrack.data.model.CreateUserRequest
 import com.pusacoffee.pusatrack.data.model.DashboardSummary
 import com.pusacoffee.pusatrack.data.model.DeviceTokenRequest
 import com.pusacoffee.pusatrack.data.model.ExpenseBatch
@@ -24,15 +25,20 @@ import com.pusacoffee.pusatrack.data.model.PurchaseOrder
 import com.pusacoffee.pusatrack.data.model.ReceiveOrderRequest
 import com.pusacoffee.pusatrack.data.model.ReportExportRequest
 import com.pusacoffee.pusatrack.data.model.ReportExportResponse
+import com.pusacoffee.pusatrack.data.model.ResetPasswordRequest
 import com.pusacoffee.pusatrack.data.model.Sale
 import com.pusacoffee.pusatrack.data.model.StockCountRecord
 import com.pusacoffee.pusatrack.data.model.StockInRequest
 import com.pusacoffee.pusatrack.data.model.StockMovement
+import com.pusacoffee.pusatrack.data.model.UpdateUserRequest
+import com.pusacoffee.pusatrack.data.model.UpdateUserStatusRequest
+import com.pusacoffee.pusatrack.data.model.User
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Multipart
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Part
@@ -219,4 +225,31 @@ interface ApiService {
     suspend fun registerDeviceToken(
         @Body request: DeviceTokenRequest
     ): Response<ApiResponse<Unit>>
+
+    // M12 — Account Management (L33-L39)
+    @GET("users")
+    suspend fun getUsers(): Response<ApiResponse<List<User>>>
+
+    @POST("users")
+    suspend fun createUser(
+        @Body request: CreateUserRequest
+    ): Response<ApiResponse<User>>
+
+    @PUT("users/{id}")
+    suspend fun updateUser(
+        @Path("id") id: Int,
+        @Body request: UpdateUserRequest
+    ): Response<ApiResponse<User>>
+
+    @POST("users/{id}/reset-password")
+    suspend fun resetUserPassword(
+        @Path("id") id: Int,
+        @Body request: ResetPasswordRequest
+    ): Response<ApiResponse<Unit>>
+
+    @PATCH("users/{id}/status")
+    suspend fun updateUserStatus(
+        @Path("id") id: Int,
+        @Body request: UpdateUserStatusRequest
+    ): Response<ApiResponse<User>>
 }

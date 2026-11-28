@@ -224,23 +224,50 @@
         android:label="@string/menu_stock_check"
         tools:layout="@layout/fragment_stock_check" />
 
+    <!-- M12: Manajemen Akun (L33-L37) -->
     <fragment
         android:id="@+id/accountsFragment"
-        android:name="com.pusacoffee.pusatrack.ui.common.ModulePlaceholderFragment"
+        android:name="com.pusacoffee.pusatrack.ui.accounts.AccountsFragment"
         android:label="@string/menu_accounts"
-        tools:layout="@layout/fragment_placeholder">
+        tools:layout="@layout/fragment_accounts" />
+
+    <fragment
+        android:id="@+id/accountDetailFragment"
+        android:name="com.pusacoffee.pusatrack.ui.accounts.AccountDetailFragment"
+        android:label="Detail Akun"
+        tools:layout="@layout/fragment_account_detail">
         <argument
-            android:name="title"
-            android:defaultValue="Manajemen Akun"
-            app:argType="string" />
+            android:name="userId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editAccountFragment"
+        android:name="com.pusacoffee.pusatrack.ui.accounts.EditAccountFragment"
+        android:label="Edit Akun"
+        tools:layout="@layout/fragment_edit_account">
         <argument
-            android:name="moduleCode"
-            android:defaultValue="L33 · Modul M12"
-            app:argType="string" />
+            android:name="userId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addAccountFragment"
+        android:name="com.pusacoffee.pusatrack.ui.accounts.AddAccountFragment"
+        android:label="Tambah Akun"
+        tools:layout="@layout/fragment_add_account" />
+
+    <fragment
+        android:id="@+id/resetPasswordFragment"
+        android:name="com.pusacoffee.pusatrack.ui.accounts.ResetPasswordFragment"
+        android:label="Reset Password"
+        tools:layout="@layout/fragment_reset_password">
         <argument
-            android:name="showBackButton"
-            android:defaultValue="true"
-            app:argType="boolean" />
+            android:name="userId"
+            android:defaultValue="-1"
+            app:argType="integer" />
     </fragment>
 
 </navigation>

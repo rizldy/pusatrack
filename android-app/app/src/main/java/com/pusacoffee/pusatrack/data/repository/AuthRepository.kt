@@ -39,17 +39,12 @@ class AuthRepository(
     }
 
     private suspend fun loginWithMock(username: String, password: String): AuthResult {
-        delay(450L)
-        val matched = MOCK_ACCOUNTS.find {
-            it.user.username.equals(username, ignoreCase = true)
-        }
+        delay(350L)
+        val user = AccountRepository.authenticate(username, password)
+            ?: return AuthResult.Error(GENERIC_LOGIN_ERROR)
 
-        if (matched == null || matched.password != password || !matched.user.isActive) {
-            return AuthResult.Error(GENERIC_LOGIN_ERROR)
-        }
-
-        sessionManager.saveSession(matched.user)
-        return AuthResult.Success(matched.user)
+        sessionManager.saveSession(user)
+        return AuthResult.Success(user)
     }
 
     private suspend fun loginWithApi(username: String, password: String): AuthResult {
@@ -84,33 +79,9 @@ class AuthRepository(
 
     fun getCurrentUser(): User? = sessionManager.getUser()
 
-    private data class MockAccount(
-        val user: User,
-        val password: String
-    )
-
     companion object {
         const val DEFAULT_USE_MOCK = true
         const val GENERIC_LOGIN_ERROR =
             "Username atau password tidak sesuai, atau akun sedang tidak aktif."
-
-        private val MOCK_ACCOUNTS = listOf(
-            MockAccount(
-                user = User(1, "natashya", "Natashya Rosario", isActive = true),
-                password = "pusa1234"
-            ),
-            MockAccount(
-                user = User(2, "afdal", "Afdal Rizaldy", isActive = true),
-                password = "pusa1234"
-            ),
-            MockAccount(
-                user = User(3, "raidah", "Raidah Syahirah", isActive = true),
-                password = "pusa1234"
-            ),
-            MockAccount(
-                user = User(4, "rizky", "Rizky Pratama", isActive = false),
-                password = "pusa1234"
-            )
-        )
     }
 }
