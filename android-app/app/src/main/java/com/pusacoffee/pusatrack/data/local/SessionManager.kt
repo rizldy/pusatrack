@@ -31,8 +31,8 @@ class SessionManager(context: Context) {
                 EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             )
-        } catch (e: Exception) {
-            Log.w(TAG, "EncryptedSharedPreferences unavailable, using fallback storage.", e)
+        } catch (t: Throwable) {
+            Log.w(TAG, "EncryptedSharedPreferences unavailable, using fallback storage.", t)
             null
         }
     }

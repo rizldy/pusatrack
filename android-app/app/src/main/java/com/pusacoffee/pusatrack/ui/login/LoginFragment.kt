@@ -63,11 +63,12 @@ class LoginFragment : Fragment() {
     }
 
     private fun applyStatusBarStyle(isDarkBackground: Boolean) {
+        val ctx = context ?: return
         val window = activity?.window ?: return
         val bgColor = if (isDarkBackground) {
-            ContextCompat.getColor(requireContext(), R.color.primary_forest)
+            ContextCompat.getColor(ctx, R.color.primary_forest)
         } else {
-            ContextCompat.getColor(requireContext(), R.color.bg_white)
+            ContextCompat.getColor(ctx, R.color.bg_white)
         }
         @Suppress("DEPRECATION")
         window.statusBarColor = bgColor
