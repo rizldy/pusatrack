@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_white"
+    android:orientation="vertical">
+
+    <!-- Top App Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="12dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            style="@style/Widget.PusaTrack.Button.Back"
+            android:layout_marginEnd="14dp" />
+
+        <TextView
+            android:id="@+id/tvScreenTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAppearance="@style/TextAppearance.PusaTrack.Headline"
+            tools:text="Tambah Bahan" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingHorizontal="20dp"
+        android:paddingBottom="28dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Error Banner -->
+            <LinearLayout
+                android:id="@+id/layoutErrorBanner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                android:background="@drawable/bg_error_banner"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="10dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_error_outline" />
+
+                <TextView
+                    android:id="@+id/tvErrorMessage"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/plus_jakarta_sans_medium"
+                    android:textColor="@color/tertiary_text"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Locked Current Stock Section (L14 Edit Bahan only) -->
+            <LinearLayout
+                android:id="@+id/layoutLockedStock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Stok saat ini (terkunci)"
+                    android:textAppearance="@style/TextAppearance.PusaTrack.TitleSmall" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_input_locked"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_lock" />
+
+                    <TextView
+                        android:id="@+id/tvLockedStockValue"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/plus_jakarta_sans_semibold"
+                        android:textColor="@color/text_muted"
+                        android:textSize="14sp"
+                        tools:text="2.140 ml (2 kotak + 300 ml)" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_info_banner"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="10dp">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_info_outline" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/plus_jakarta_sans_medium"
+                        android:text="Stok tidak diubah di sini. Gunakan Tambah stok atau Pemeriksaan Fisik."
+                        android:textColor="@color/primary_on_container"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Nama Bahan -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nama bahan baku"
+                android:textAppearance="@style/TextAppearance.PusaTrack.TitleSmall" />
+
+            <EditText
+                android:id="@+id/etName"
+                style="@style/Widget.PusaTrack.EditText.Tonal"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="8dp"
+                android:hint="Contoh: Sirup Gula Aren"
+                android:inputType="textCapWords"
+                android:maxLines="1" />
+
+            <!-- Satuan Pembelian & Satuan Penggunaan -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Satuan pembelian"
+                        android:textAppearance="@style/TextAppearance.PusaTrack.TitleSmall" />
+
+                    <EditText
+                        android:id="@+id/etPurchaseUnit"
+                        style="@style/Widget.PusaTrack.EditText.Tonal"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="8dp"
+                        android:hint="kotak / pak"
+                        android:inputType="text"
+                        android:maxLines="1" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Satuan penggunaan"
+                        android:textAppearance="@style/TextAppearance.PusaTrack.TitleSmall" />
+
+                    <EditText
+                        android:id="@+id/etUsageUnit"
+                        style="@style/Widget.PusaTrack.EditText.Tonal"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="8dp"
+                        android:hint="ml / g / pcs"
+                        android:inputType="text"
+                        android:maxLines="1" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Isi per kemasan -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Isi per kemasan"
+                android:textAppearance="@style/TextAppearance.PusaTrack.TitleSmall" />
+
+            <EditText
+                android:id="@+id/etPackageSize"
+                style="@style/Widget.PusaTrack.EditText.Tonal"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="8dp"
+                android:hint="Contoh: 920"
+                android:inputType="number"
+                android:maxLines="1" />
+
+            <!-- Jumlah kemasan stok awal (L13 Add only) -->
+            <LinearLayout
+                android:id="@+id/layoutOpeningStock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Jumlah kemasan stok awal"
+                    android:textAppearance="@style/TextAppearance.PusaTrack.TitleSmall" />
+
+                <EditText
+                    android:id="@+id/etOpeningStock"
+                    style="@style/Widget.PusaTrack.EditText.Tonal"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="8dp"
+                    android:hint="Contoh: 5"
+                    android:inputType="number"
+                    android:maxLines="1" />
+            </LinearLayout>
+
+            <!-- Harga per kemasan -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Harga per kemasan (Rp)"
+                android:textAppearance="@style/TextAppearance.PusaTrack.TitleSmall" />
+
+            <EditText
+                android:id="@+id/etPackagePrice"
+                style="@style/Widget.PusaTrack.EditText.Tonal"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="8dp"
+                android:hint="Contoh: 18500"
+                android:inputType="number"
+                android:maxLines="1" />
+
+            <!-- Batas minimum (dalam satuan pembelian) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Batas minimum (dalam kemasan)"
+                android:textAppearance="@style/TextAppearance.PusaTrack.TitleSmall" />
+
+            <EditText
+                android:id="@+id/etMinPackages"
+                style="@style/Widget.PusaTrack.EditText.Tonal"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="8dp"
+                android:hint="Contoh: 3"
+                android:inputType="number"
+                android:maxLines="1" />
+
+            <TextView
+                android:id="@+id/tvMinConversion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:fontFamily="@font/plus_jakarta_sans_semibold"
+                android:textColor="@color/primary_forest"
+                android:textSize="12sp"
+                tools:text="= 2.760 ml" />
+
+            <!-- Cara pengadaan Segmented Control -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Cara pengadaan"
+                android:textAppearance="@style/TextAppearance.PusaTrack.TitleSmall" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_segmented_track"
+                android:orientation="horizontal"
+                android:padding="4dp">
+
+                <TextView
+                    android:id="@+id/btnProcurementSupplied"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_chip_selected"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="@font/plus_jakarta_sans_semibold"
+                    android:gravity="center"
+                    android:text="Dipesan ke pusat"
+                    android:textColor="@color/bg_white"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/btnProcurementDirect"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="@font/plus_jakarta_sans_semibold"
+                    android:gravity="center"
+                    android:text="Beli langsung"
+                    android:textColor="@color/text_muted"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <!-- Live Preview Card (#E3EEE6) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/bg_preview_card"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/plus_jakarta_sans_semibold"
+                    android:text="Pratinjau bahan"
+                    android:textColor="@color/primary_forest"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvPreviewPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:fontFamily="@font/plus_jakarta_sans_bold"
+                    android:textColor="@color/primary_on_container"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:text="Stok awal: 5 × 920 ml = 4.600 ml" />
+
+                <TextView
+                    android:id="@+id/tvPreviewUnitCost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/plus_jakarta_sans_medium"
+                    android:textColor="@color/primary_on_container"
+                    android:textSize="12sp"
+                    tools:text="Harga satuan pakai: Rp 20,11 per ml" />
+            </LinearLayout>
+
+            <!-- Opening Stock Info Banner (L13 only) -->
+            <LinearLayout
+                android:id="@+id/bannerOpeningStockInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_info_banner"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="10dp">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_info_outline" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/plus_jakarta_sans_medium"
+                    android:text="Stok awal akan otomatis dicatat sebagai pergerakan stok OPENING_STOCK di riwayat."
+                    android:textColor="@color/primary_on_container"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSubmit"
+                style="@style/Widget.PusaTrack.Button.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginTop="24dp"
+                android:text="Simpan" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -19,11 +19,12 @@
         android:label="@string/nav_home"
         tools:layout="@layout/fragment_home" />
 
+    <!-- L10: Inventori -->
     <fragment
         android:id="@+id/inventoryFragment"
         android:name="com.pusacoffee.pusatrack.ui.inventory.InventoryFragment"
         android:label="@string/nav_inventory"
-        tools:layout="@layout/fragment_placeholder" />
+        tools:layout="@layout/fragment_inventory" />
 
     <fragment
         android:id="@+id/cashierFragment"
@@ -43,7 +44,82 @@
         android:label="@string/nav_history"
         tools:layout="@layout/fragment_placeholder" />
 
-    <!-- Secondary Destinations (Detail / Menu Lainnya — Bottom Nav Hidden) -->
+    <!-- M6a-M6c: Inventory Detail & Form Screens (L11-L14) -->
+    <fragment
+        android:id="@+id/ingredientDetailFragment"
+        android:name="com.pusacoffee.pusatrack.ui.inventory.IngredientDetailFragment"
+        android:label="Detail Bahan"
+        tools:layout="@layout/fragment_ingredient_detail">
+        <argument
+            android:name="ingredientId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addStockFragment"
+        android:name="com.pusacoffee.pusatrack.ui.inventory.AddStockFragment"
+        android:label="Tambah Stok"
+        tools:layout="@layout/fragment_add_stock">
+        <argument
+            android:name="ingredientId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addIngredientFragment"
+        android:name="com.pusacoffee.pusatrack.ui.inventory.AddIngredientFragment"
+        android:label="Tambah Bahan"
+        tools:layout="@layout/fragment_ingredient_form" />
+
+    <fragment
+        android:id="@+id/editIngredientFragment"
+        android:name="com.pusacoffee.pusatrack.ui.inventory.EditIngredientFragment"
+        android:label="Edit Bahan"
+        tools:layout="@layout/fragment_ingredient_form">
+        <argument
+            android:name="ingredientId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
+
+    <!-- M11: Products & Recipes (L29-L32) -->
+    <fragment
+        android:id="@+id/productsFragment"
+        android:name="com.pusacoffee.pusatrack.ui.products.ProductsFragment"
+        android:label="@string/menu_products"
+        tools:layout="@layout/fragment_products" />
+
+    <fragment
+        android:id="@+id/productDetailFragment"
+        android:name="com.pusacoffee.pusatrack.ui.products.ProductDetailFragment"
+        android:label="Detail Resep"
+        tools:layout="@layout/fragment_product_detail">
+        <argument
+            android:name="productId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editRecipeFragment"
+        android:name="com.pusacoffee.pusatrack.ui.products.EditRecipeFragment"
+        android:label="Edit Resep"
+        tools:layout="@layout/fragment_product_form">
+        <argument
+            android:name="productId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addProductFragment"
+        android:name="com.pusacoffee.pusatrack.ui.products.AddProductFragment"
+        android:label="Tambah Produk"
+        tools:layout="@layout/fragment_product_form" />
+
+    <!-- Secondary Placeholder Destinations (MS-2 to MS-4) -->
     <fragment
         android:id="@+id/notificationsFragment"
         android:name="com.pusacoffee.pusatrack.ui.common.ModulePlaceholderFragment"
@@ -113,25 +189,6 @@
         <argument
             android:name="moduleCode"
             android:defaultValue="L24 · Modul M8"
-            app:argType="string" />
-        <argument
-            android:name="showBackButton"
-            android:defaultValue="true"
-            app:argType="boolean" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/productsFragment"
-        android:name="com.pusacoffee.pusatrack.ui.common.ModulePlaceholderFragment"
-        android:label="@string/menu_products"
-        tools:layout="@layout/fragment_placeholder">
-        <argument
-            android:name="title"
-            android:defaultValue="Produk &amp; Resep"
-            app:argType="string" />
-        <argument
-            android:name="moduleCode"
-            android:defaultValue="L29 · Modul M11"
             app:argType="string" />
         <argument
             android:name="showBackButton"

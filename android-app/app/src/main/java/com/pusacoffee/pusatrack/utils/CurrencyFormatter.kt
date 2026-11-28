@@ -8,7 +8,7 @@ import kotlin.math.roundToLong
 
 object CurrencyFormatter {
 
-    private val symbols = DecimalFormatSymbols(Locale("id", "ID")).apply {
+    private val symbols = DecimalFormatSymbols(Locale.forLanguageTag("id-ID")).apply {
         groupingSeparator = '.'
         decimalSeparator = ','
     }

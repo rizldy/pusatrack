@@ -4,15 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pusacoffee.pusatrack.MainActivity
 import com.pusacoffee.pusatrack.R
 import com.pusacoffee.pusatrack.data.local.SessionManager
+import com.pusacoffee.pusatrack.data.model.StockStatus
 import com.pusacoffee.pusatrack.data.repository.AuthRepository
+import com.pusacoffee.pusatrack.data.repository.InventoryRepository
 import com.pusacoffee.pusatrack.databinding.FragmentHomeBinding
 import com.pusacoffee.pusatrack.utils.CurrencyFormatter
 import com.pusacoffee.pusatrack.utils.DateFormatter
@@ -42,6 +47,7 @@ class HomeFragment : Fragment() {
         authRepository = AuthRepository(requireContext())
 
         bindUserAndSummary()
+        observeInventorySummary()
         setupClickListeners()
     }
 
@@ -52,7 +58,7 @@ class HomeFragment : Fragment() {
         binding.tvUserName.text = fullName
         binding.tvHeroDate.text = DateFormatter.formatDate()
 
-        // Initial dummy operational summary matching PRD & mockup v7
+        // Initial operational summary matching PRD & mockup v7
         val totalSales = 360_000L
         val cashSales = 210_000L
         val qrisSales = 150_000L
@@ -68,11 +74,36 @@ class HomeFragment : Fragment() {
         binding.tvLastTrxCode.text = "TRX-0015"
         binding.tvLastTrxMeta.text = "09:38 · ${CurrencyFormatter.format(30_000L)}"
 
-        binding.tvLowStockCount.text = "2 bahan"
-        binding.tvLowStockNames.text = "Susu UHT, Cup 12 oz"
-
         binding.tvActiveOrderCode.text = "PSN-014"
         binding.tvActiveOrderMeta.text = "2 hari · Perjalanan"
+    }
+
+    private fun observeInventorySummary() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                InventoryRepository.ingredients.collect { ingredients ->
+                    val lowOrOut = ingredients.filter {
+                        it.isActive &&
+                            (it.stockStatus == StockStatus.LOW || it.stockStatus == StockStatus.OUT)
+                    }
+                    val count = lowOrOut.size
+                    binding.tvNotificationBadge.isVisible = count > 0
+                    binding.tvNotificationBadge.text = count.toString()
+
+                    binding.bannerLowStock.isVisible = count > 0
+                    if (count > 0) {
+                        val names = lowOrOut.joinToString(", ") { it.ingredientName }
+                        binding.tvLowStockDesc.text =
+                            "$count bahan baku di bawah batas minimum ($names)"
+                        binding.tvLowStockCount.text = "$count bahan"
+                        binding.tvLowStockNames.text = names
+                    } else {
+                        binding.tvLowStockCount.text = "0 bahan"
+                        binding.tvLowStockNames.text = "Semua stok aman"
+                    }
+                }
+            }
+        }
     }
 
     private fun setupClickListeners() {

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_white"
+    android:orientation="vertical"
+    tools:context=".ui.inventory.AddStockFragment">
+
+    <!-- Top App Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="12dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            style="@style/Widget.PusaTrack.Button.Back"
+            android:layout_marginEnd="14dp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tambah Stok"
+                android:textAppearance="@style/TextAppearance.PusaTrack.Headline" />
+
+            <TextView
+                android:id="@+id/tvIngredientSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textAppearance="@style/TextAppearance.PusaTrack.BodySmall"
+                tools:text="Susu UHT Full Cream · 1 kotak = 920 ml" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingHorizontal="20dp"
+        android:paddingBottom="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Error Banner -->
+            <LinearLayout
+                android:id="@+id/layoutErrorBanner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                android:background="@drawable/bg_error_banner"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="10dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_error_outline" />
+
+                <TextView
+                    android:id="@+id/tvErrorMessage"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/plus_jakarta_sans_medium"
+                    android:textColor="@color/tertiary_text"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Tempat beli (opsional) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tempat beli (opsional)"
+                android:textAppearance="@style/TextAppearance.PusaTrack.TitleSmall" />
+
+            <EditText
+                android:id="@+id/etPurchasePlace"
+                style="@style/Widget.PusaTrack.EditText.Tonal"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="8dp"
+                android:hint="Contoh: Indomaret BTP"
+                android:inputType="textCapWords"
+                android:maxLines="1" />
+
+            <!-- Tanggal & Jam -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Tanggal &amp; jam"
+                android:textAppearance="@style/TextAppearance.PusaTrack.TitleSmall" />
+
+            <LinearLayout
+                android:id="@+id/btnPickDateTime"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_input_tonal"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_calendar" />
+
+                <TextView
+                    android:id="@+id/tvDateTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/plus_jakarta_sans_medium"
+                    android:textColor="@color/text_ink"
+                    android:textSize="14sp"
+                    tools:text="Rab, 18 Nov 2026 · 09:45" />
+            </LinearLayout>
+
+            <!-- Jumlah Kemasan -->
+            <TextView
+                android:id="@+id/tvPackageQtyLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Jumlah kemasan (kotak)"
+                android:textAppearance="@style/TextAppearance.PusaTrack.TitleSmall" />
+
+            <EditText
+                android:id="@+id/etPackageQty"
+                style="@style/Widget.PusaTrack.EditText.Tonal"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="8dp"
+                android:hint="Contoh: 3"
+                android:inputType="number"
+                android:maxLines="1" />
+
+            <!-- Harga per Kemasan -->
+            <TextView
+                android:id="@+id/tvPackagePriceLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Harga per kemasan (Rp)"
+                android:textAppearance="@style/TextAppearance.PusaTrack.TitleSmall" />
+
+            <EditText
+                android:id="@+id/etPackagePrice"
+                style="@style/Widget.PusaTrack.EditText.Tonal"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="8dp"
+                android:hint="Contoh: 18500"
+                android:inputType="number"
+                android:maxLines="1" />
+
+            <!-- Live Preview Card (#E3EEE6) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/bg_preview_card"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/plus_jakarta_sans_semibold"
+                    android:text="Pratinjau pertambahan stok"
+                    android:textColor="@color/primary_forest"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvPreviewDelta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:fontFamily="@font/plus_jakarta_sans_bold"
+                    android:textColor="@color/primary_on_container"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:text="+3 × 920 ml = +2.760 ml" />
+
+                <TextView
+                    android:id="@+id/tvPreviewResult"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/plus_jakarta_sans_medium"
+                    android:textColor="@color/primary_on_container"
+                    android:textSize="12sp"
+                    tools:text="Stok jadi 4.900 ml · harga bahan Rp 20,11 per ml" />
+            </LinearLayout>
+
+            <!-- Info Banner -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_info_banner"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="12dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_info_outline" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/plus_jakarta_sans_medium"
+                    android:text="Tidak dihitung sebagai pengeluaran. Harga dipakai untuk memperbarui harga bahan (HPP)."
+                    android:textColor="@color/primary_on_container"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSaveStock"
+                style="@style/Widget.PusaTrack.Button.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginTop="24dp"
+                android:text="Simpan Stok" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
